@@ -1,4 +1,4 @@
-# client
+# Multimate Tic Tac Toe (Frontend)
 
 ## Project setup
 ```
