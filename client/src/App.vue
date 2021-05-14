@@ -4,7 +4,6 @@
 
 <script>
 import Home from './components/Home.vue'
-// import io from 'socket.io-client'; //eslint-disable-line
 
 export default {
   name: 'App',
@@ -38,16 +37,17 @@ body {
   height: 100%;
 }
 button {
-  border: 0;
-  border-radius: 4px;
   background-color: #50fa7b;
+  border: 0;
+  border-radius: 1.5rem;
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
   color: #000;
   cursor: pointer;
   text-align: center;
-  font-size: 18px;
-  font-weight: 400;
-  padding: 10px 18px;
-  opacity: 0.6;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  opacity: 0.75;
   transition: 0.3s;
 }
 button:hover {

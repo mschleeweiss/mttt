@@ -8,7 +8,7 @@
         <span class="subtitle">*Multimate Tic Tac Toe</span>
       </div>
       <div class="init">
-        <button>Create Game</button>
+        <button v-on:click="createGame">Create Game</button>
       </div>
     </div>
 
@@ -18,7 +18,17 @@
 
 <script>
 export default {
-  name: 'Home'
+  name: 'Home',
+  sockets: {
+    msgToClient(val) {
+      alert(val);
+    }
+  },
+  methods: {
+    createGame() {
+      alert(5); 
+    }
+  }
 }
 </script>
 
@@ -35,9 +45,19 @@ export default {
   align-items: center;
   background-color: #282a36;
   height: 2rem;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
   z-index: 1;
+}
+
+.header {
+  background: rgb(189, 147, 249);
+  background: linear-gradient(
+    90deg,
+    rgba(189, 147, 249, 1) 0%,
+    rgba(241, 250, 140, 1) 100%
+  );
+  color: #000;
 }
 .content {
   display: flex;
@@ -64,7 +84,7 @@ export default {
   margin: 0;
   text-align: center;
   text-overflow: clip;
-  text-shadow: -3px 0 1px #8be9fd, 3px 0 1px #ff5555;
+  text-shadow: -4px 0 1px #8be9fd, 4px 0 1px #ff5555;
 }
 .subtitle {
   font-size: 0.5rem;
