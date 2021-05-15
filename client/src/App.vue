@@ -9,11 +9,7 @@ export default {
   name: 'App',
   components: {
     Home
-  },
-  // beforeMount() {
-  //   const socket = io("http://localhost:3000")
-  //   socket.emit("msgToServer", "huan")
-  // }
+  }
 }
 </script>
 

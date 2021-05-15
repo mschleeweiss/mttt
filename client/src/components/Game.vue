@@ -1,15 +1,9 @@
 <template>
   <div class="container">
-    <div class="header">Please donate ❤️</div>
+    <div class="header">Lobby</div>
 
     <div class="content">
-      <div class="title">
-        <h1 class="anaglyph">MTTT*</h1>
-        <span class="subtitle">*Multimate Tic Tac Toe</span>
-      </div>
-      <div class="init">
-        <button v-on:click="createGame">Create Game</button>
-      </div>
+
     </div>
 
     <div class="footer">Impressum dies das</div>
@@ -18,18 +12,7 @@
 
 <script>
 export default {
-  name: 'Home',
-  sockets: {
-    gameCreated(game) {
-      console.log(game);
-      this.$router.push({ path: `/join/${12345}` })
-    }
-  },
-  methods: {
-    createGame() {
-      this.$socket.client.emit("createGame");
-    }
-  }
+  name: 'Game'
 }
 </script>
 
