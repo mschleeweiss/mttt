@@ -8,7 +8,7 @@
         <span class="subtitle">*Multimate Tic Tac Toe</span>
       </div>
       <div class="init">
-        <button v-on:click="createGame">Create Game</button>
+        <my-button :click="createGame">Create Game</my-button>
       </div>
     </div>
 
@@ -17,8 +17,14 @@
 </template>
 
 <script>
+
+import Button from '@/components/Button.vue'
+
 export default {
   name: 'Home',
+  components: {
+    'my-button': Button
+  },
   sockets: {
     gameCreated(gameId) {
       this.$router.push({ path: `/join/${gameId}` })
