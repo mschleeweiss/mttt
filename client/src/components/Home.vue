@@ -20,9 +20,8 @@
 export default {
   name: 'Home',
   sockets: {
-    gameCreated(game) {
-      console.log(game);
-      this.$router.push({ path: `/join/${12345}` })
+    gameCreated(gameId) {
+      this.$router.push({ path: `/join/${gameId}` })
     }
   },
   methods: {

@@ -2,9 +2,7 @@
   <div class="container">
     <div class="header">Lobby</div>
 
-    <div class="content">
-
-    </div>
+    <div class="content"></div>
 
     <div class="footer">Impressum dies das</div>
   </div>
@@ -12,7 +10,23 @@
 
 <script>
 export default {
-  name: 'Game'
+  name: 'Game',
+  computed: {
+      gameId() {
+          return this.$route.params.gameid;
+      }
+  },
+  mounted() {
+      this.$socket.client.emit("joinGame", {
+          gameId: this.gameId,
+          name: "Player 7"
+      });
+  },
+  sockets: {
+      gameJoined(game) {
+          this.game = game;
+      }
+  }
 }
 </script>
 
