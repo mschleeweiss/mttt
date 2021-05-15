@@ -6,4 +6,8 @@ export class Player {
         this.id = id;
         this.name = name;
     }
+
+    equals(player: Player): boolean {
+        return player.id === this.id;
+    }
 }

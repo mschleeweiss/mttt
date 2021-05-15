@@ -13,21 +13,28 @@ import { Game } from './Game'
 @WebSocketGateway()
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
-  games: Game[];
+  games: Object;
 
   constructor() {
-    this.games = [];
+    this.games = {};
   }
 
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('AppGateway');
 
   @SubscribeMessage('createGame')
-  handleMessage(client: Socket, payload: string): void {
-    const player = new Player(client.id, "Player #1");
-    const game = new Game(player);
-    this.games.push(game);
-    this.server.emit("gameCreated", game);
+  handleCreateGame(client: Socket, payload: string): void {
+    const game = new Game(client.id);
+    this.games[game.id] = game;
+    this.server.emit("gameCreated", game.id);
+  }
+
+  @SubscribeMessage('joinGame')
+  handleJoinGame(client: Socket, payload: any): void {
+    const player = new Player(client.id, "Player #2");
+    this.logger.log(payload);
+    const game = this.games[payload.gameId]
+    this.server.emit("gameJoined", game);
   }
 
   handleDisconnect(client: Socket) {
