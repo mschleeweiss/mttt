@@ -2,11 +2,8 @@ import { createApp } from 'vue';
 import App from './App.vue';
 
 import VueSocketIOExt from 'vue-socket.io-extended';
-import io from 'socket.io-client';
-import router from './router'
-
-const socket = io("http://localhost:3000")
-
+import socket from './socket';
+import router from './router';
 
 createApp(App)
     .use(VueSocketIOExt, socket)
