@@ -20,13 +20,14 @@
 export default {
   name: 'Home',
   sockets: {
-    msgToClient(val) {
-      alert(val);
+    gameCreated(game) {
+      console.log(game);
     }
   },
   methods: {
     createGame() {
-      alert(5); 
+      this.$socket.client.emit("createGame");
+      alert(5);
     }
   }
 }
