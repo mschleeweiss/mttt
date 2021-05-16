@@ -5,18 +5,28 @@
 </template>
 
 <script>
+
+const COLORS = {
+  "green": "#50fa7b",
+  "cyan": "#8be9fd",
+  "red": "#ff5555"
+};
 export default {
   name: 'Button',
   props: {
     click: {
       type: Function,
-      required: true,
+      required: true
     },
+    color: {
+      type: String,
+      required: true
+    }
   },
   data() {
     return {
       myStyle: {
-        backgroundColor: '#50fa7b',
+        backgroundColor: COLORS[this.color],
       },
     };
   },

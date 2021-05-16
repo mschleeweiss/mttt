@@ -8,7 +8,7 @@
         <span class="subtitle">*Multimate Tic Tac Toe</span>
       </div>
       <div class="init">
-        <my-button :click="createGame">Create Game</my-button>
+        <my-button :click="createGame" color="green">Create Game</my-button>
       </div>
     </div>
 

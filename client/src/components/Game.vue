@@ -2,15 +2,22 @@
   <div class="container">
     <div class="header">Lobby</div>
 
-    <div class="content"></div>
+    <div class="content">
+      <Lobby />
+    </div>
 
     <div class="footer">Impressum dies das</div>
   </div>
 </template>
 
 <script>
+import Lobby from "@/components/Lobby.vue"
+
 export default {
   name: 'Game',
+  components: {
+    'Lobby': Lobby
+  },
   computed: {
       gameId() {
           return this.$route.params.gameid;
