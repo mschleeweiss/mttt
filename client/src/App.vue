@@ -5,7 +5,10 @@
 <script>
 
 export default {
-  name: 'App'
+  name: 'App',
+  sockets: {
+    
+  }
 }
 </script>
 

@@ -1,25 +1,43 @@
 <template>
   <div class="lobby-container">
-    <my-button color="cyan">Join Team X</my-button>
-    <my-button color="red">Join Team O</my-button>
+
+    <Team team="X" :teams="teams"/>
+    <Team team="O" :teams="teams"/>
+
+    <my-button :click="startGame" color="green">
+      Start
+    </my-button>
   </div>
 </template>
 
 <script>
 import Button from '@/components/Button.vue'
+import Team from '@/components/Team.vue'
+
 
 export default {
   name: 'Lobby',
   components: {
-    'my-button': Button
+    'my-button': Button,
+    'Team': Team
   },
-  methods: {
-      joinTeamX() {
-          this.$socket.client.emit("joinTeamX");
-      },
-      joinTeamO() {
-          this.$socket.client.emit("joinTeamO");
-      }
+  computed: {
+    teams() {
+      return this.game?.teams ?? {};
+    }
+  },
+  data() {
+    return {
+      game: null
+    }
+  },
+  sockets: {
+    gameJoined(data) {
+      this.game = data;
+    },
+    lobbyChanged(data) {
+      this.game = data;
+    }
   }
 }
 </script>

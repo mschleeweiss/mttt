@@ -27,10 +27,10 @@ npm run serve
 ## ToDo
 
 Frontend
-- [ ] component for styled button with different types/colors
-- [ ] component for Lobby (visible if game.lobby = true)
+- [x] component for styled button with different types/colors
+- [x] component for Lobby (visible if game.lobby = true)
 - [ ] copy shareable link button
-- [ ] players can choose between X and O in lobby
+- [ ] players can choose between X and O in lobby, display in a list (component TeamList?)
 - [ ] players can change name (store name in localStorage for future games)
 - [ ] once everyone is in a team show button to start the game
 - [ ] component for Board (visible if game.lobby = false)

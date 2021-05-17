@@ -7,26 +7,34 @@
 <script>
 
 const COLORS = {
-  "green": "#50fa7b",
-  "cyan": "#8be9fd",
-  "red": "#ff5555"
+  "green": {
+    bg: "#50fa7b",
+    fg: "#282a36"
+  },
+  "cyan": {
+    bg: "#8be9fd",
+    fg: "#282a36"
+  },
+  "red": {
+    bg: "#ff5555",
+    fg: "#282a36"
+  },
+  "black": {
+    bg: "#282a36",
+    fg: "#f8f8f2"
+  }
 };
 export default {
   name: 'Button',
   props: {
-    click: {
-      type: Function,
-      required: true
-    },
-    color: {
-      type: String,
-      required: true
-    }
+    click: Function,
+    color: String
   },
   data() {
     return {
       myStyle: {
-        backgroundColor: COLORS[this.color],
+        backgroundColor: COLORS[this.color].bg,
+        color: COLORS[this.color].fg
       },
     };
   },
