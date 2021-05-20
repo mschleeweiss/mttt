@@ -17,6 +17,7 @@ export class Game {
     readonly board: MetaBoard;
     private readonly players: Player[];
     readonly teams: Object;
+    private currentPlayer: Player;
 
     constructor(admin: string) {
         this.id = this.generateId(4);
@@ -83,7 +84,6 @@ export class Game {
         const otherTeamList = this.teams[otherTeam];
         
         if (this.players.includes(player)) {
-            console.log("good");
             const oldTeamIdx = otherTeamList.indexOf(player);
             if (oldTeamIdx >= 0) {
                 otherTeamList.splice(oldTeamIdx, 1);
@@ -94,6 +94,13 @@ export class Game {
         }
 
         this.updateGameStartable();
+    }
+
+    public startGame(): void {
+        if (this.startable) {
+            this.active = true;
+            this.currentPlayer = this.teams[PlayerType.X][0];
+        }
     }
 
     private updateGameStartable(): void {
