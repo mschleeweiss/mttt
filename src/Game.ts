@@ -6,7 +6,7 @@ import { Settings } from './Settings'
 export class Game {
     readonly id: string;
     readonly timestamp: Date;
-    private admin: string;
+    admin: Player;
 
     private startable: boolean;
     private active: boolean;
@@ -19,7 +19,7 @@ export class Game {
     readonly teams: Object;
     private currentPlayer: Player;
 
-    constructor(admin: string) {
+    constructor(admin: Player) {
         this.id = this.generateId(4);
         this.timestamp = new Date();
         this.admin = admin;
@@ -63,10 +63,9 @@ export class Game {
             this.players.splice(playerIdx, 1);
         }
 
-        if (this.admin === id) {
+        if (this.admin.id === id) {
             if (this.players.length > 0) {
-                const newAdmin = this.players[0];
-                this.admin = newAdmin.id;
+                this.admin = this.players[0];
             }
         }
 
@@ -102,6 +101,8 @@ export class Game {
             this.currentPlayer = this.teams[PlayerType.X][0];
         }
     }
+
+    public makeMove(): void {}
 
     private updateGameStartable(): void {
         this.startable = this.isGameStartable();

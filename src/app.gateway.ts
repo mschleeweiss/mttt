@@ -18,17 +18,38 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer() server: Server;
   private games: Map<String, Game>;
+  private players: Map<String, Player>
   private logger: Logger;
 
   constructor() {
     this.games = new Map();
+    this.players = new Map();
     this.logger = new Logger('AppGateway');
+  }
+
+  handleConnection(client: Socket, ...args: any[]) {
+    const oldId = client.handshake.query.id;
+    const name = client.handshake.query.name;
+
+    let player = this.players.get(oldId);
+    if (player) {
+      player.id = client.id;
+      this.players.delete(oldId);
+    } else {
+      player = new Player(client.id, name);
+    }
+    this.players.set(client.id, player);
+    
+
+    client.emit('clientConnected', client.id);
+    this.logger.log(`Client connected: ${client.id}`);
   }
 
 
   @SubscribeMessage('createGame')
   handleCreateGame(client: Socket, payload: string): WsResponse<unknown> {
-    const game = new Game(client.id);
+    const player = this.players.get(client.id);
+    const game = new Game(player);
     this.games.set(game.id, game);
     const event = 'gameCreated'
     return { event, data: game.id };
@@ -62,17 +83,20 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.to(payload.gameId).emit('lobbyChanged', game);
   }
 
+  @SubscribeMessage('changeName')
+  handleChangeName(socket: Socket, payload: any): void {
+    
+  }
+
   handleDisconnect(client: Socket) {
+    this.logger.log(`Client disconnected: ${client.id}`);
+    this.players.get(client.id).connected = false;
     this.games.forEach((game) => {
       if (game.containsPlayer(client.id)) {
         game.removePlayer(client.id);
+        this.logger.log(`Current admin: ${game.admin}`);
         client.to(game.id).emit('lobbyChanged', game);
       }
     });
-  }
-
-  handleConnection(client: Socket, ...args: any[]) {
-    client.emit('clientConnected', client.id)
-    this.logger.log(`Client connected: ${client.id}`);
   }
 }

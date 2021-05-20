@@ -20,14 +20,22 @@ export default {
     'Team': Team
   },
   computed: {
+    socketId() {
+      return this.$store.state.socketId;
+    },
     teams() {
       return this.game?.teams ?? {};
     },
     isAdmin() {
-      return this.$store.state.socketId === this.game?.admin;
+      return this.$store.state.socketId === this.game?.admin.id;
     },
     isStartable() {
       return this.game?.startable ?? false;
+    }
+  },
+  watch: {
+    socketId(old, nu) {
+      console.log(old, nu);
     }
   },
   data() {

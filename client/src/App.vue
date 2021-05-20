@@ -8,7 +8,7 @@ export default {
   name: 'App',
   sockets: {
     clientConnected(socketId) {
-      this.$store.commit('update', socketId);
+      this.$store.commit('updateSocketId', socketId);
     }
   }
 }

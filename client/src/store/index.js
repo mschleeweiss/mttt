@@ -2,11 +2,17 @@ import { createStore } from 'vuex'
 
 export const store = createStore({
   state: {
-    socketId: ""
+    socketId: sessionStorage.socketId ?? "",
+    name: localStorage.name ?? "Player Unknown"
   },
   mutations: {
-    update (state, id) {
+    updateSocketId (state, id) {
       state.socketId = id;
+      sessionStorage.socketId = id;
+    },
+    updateName (state, name) {
+      state.name = name;
+      localStorage.name = name;
     }
   }
 });
