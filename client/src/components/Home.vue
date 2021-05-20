@@ -18,13 +18,8 @@
 
 <script>
 
-import Button from '@/components/Button.vue'
-
 export default {
   name: 'Home',
-  components: {
-    'my-button': Button
-  },
   sockets: {
     gameCreated(gameId) {
       this.$router.push({ path: `/join/${gameId}` })

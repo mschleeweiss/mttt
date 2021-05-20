@@ -4,26 +4,30 @@
     <Team team="X" :teams="teams"/>
     <Team team="O" :teams="teams"/>
 
-    <my-button :click="startGame" color="green">
+    <my-button v-if="isAdmin" :click="startGame" :enabled="isStartable" color="green">
       Start
     </my-button>
   </div>
 </template>
 
 <script>
-import Button from '@/components/Button.vue'
 import Team from '@/components/Team.vue'
 
 
 export default {
   name: 'Lobby',
   components: {
-    'my-button': Button,
     'Team': Team
   },
   computed: {
     teams() {
       return this.game?.teams ?? {};
+    },
+    isAdmin() {
+      return this.$store.state.socketId === this.game?.admin;
+    },
+    isStartable() {
+      return this.game?.startable ?? false;
     }
   },
   data() {
@@ -37,6 +41,11 @@ export default {
     },
     lobbyChanged(data) {
       this.game = data;
+    }
+  },
+  methods: {
+    startGame() {
+      alert(5);
     }
   }
 }

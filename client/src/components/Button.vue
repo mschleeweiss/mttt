@@ -1,43 +1,48 @@
 <template>
-  <button :style="myStyle" @click="click">
+  <button :style="colorStyle" @click="click" :disabled="!enabled">
     <slot> </slot>
   </button>
 </template>
 
 <script>
-
 const COLORS = {
-  "green": {
-    bg: "#50fa7b",
-    fg: "#282a36"
+  green: {
+    bg: '#50fa7b',
+    fg: '#282a36',
   },
-  "cyan": {
-    bg: "#8be9fd",
-    fg: "#282a36"
+  cyan: {
+    bg: '#8be9fd',
+    fg: '#282a36',
   },
-  "red": {
-    bg: "#ff5555",
-    fg: "#282a36"
+  red: {
+    bg: '#ff5555',
+    fg: '#282a36',
   },
-  "black": {
-    bg: "#282a36",
-    fg: "#f8f8f2"
-  }
+  black: {
+    bg: '#282a36',
+    fg: '#f8f8f2',
+  },
 };
 export default {
   name: 'Button',
   props: {
     click: Function,
-    color: String
+    color: String,
+    enabled: {
+      type: Boolean,
+      default: true,
+    },
   },
-  data() {
-    return {
-      myStyle: {
-        backgroundColor: COLORS[this.color].bg,
-        color: COLORS[this.color].fg
-      },
-    };
-  },
+  computed: {
+    colorStyle() {
+      const myStyle = {};
+      if (this.enabled) {
+        myStyle.backgroundColor = COLORS[this.color].bg;
+        myStyle.color = COLORS[this.color].fg;
+      }
+      return myStyle;
+    },
+  }
 };
 </script>
 
@@ -47,8 +52,6 @@ button {
   border: 0;
   border-radius: 1.5rem;
   box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
-  color: #282a36;
-  cursor: pointer;
   text-align: center;
   font-size: 1rem;
   font-weight: 700;
@@ -56,7 +59,12 @@ button {
   opacity: 0.75;
   transition: 0.3s;
 }
-button:hover {
+button:disabled {
+  background-color: #fff;
+  color: #999;
+}
+button:not([disabled]):hover {
   opacity: 1;
+  cursor: pointer;
 }
 </style>

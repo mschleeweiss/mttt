@@ -38,6 +38,9 @@ export default {
     lobbyVisible() {
       return !this.game?.active && !this.game?.over && !this.notFound;
     },
+    boardVisible() {
+      return this.game?.active && !this.game?.over && !this.notFound;
+    }
   },
   mounted() {
     this.$socket.client.emit('joinGame', {

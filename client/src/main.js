@@ -6,8 +6,12 @@ import { socket } from './socket';
 import { store } from './store';
 import { router } from './router';
 
-createApp(App)
+import Button from './components/Button'
+
+const app = createApp(App)
     .use(VueSocketIOExt, socket)
     .use(router)
-    .use(store)
-    .mount("#app");
+    .use(store);
+
+app.component('my-button', Button)
+app.mount("#app");
