@@ -66,12 +66,13 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.games.forEach((game) => {
       if (game.containsPlayer(client.id)) {
         game.removePlayer(client.id);
-        this.server.to(game.id).emit('lobbyChanged', game);
+        client.to(game.id).emit('lobbyChanged', game);
       }
     });
   }
 
   handleConnection(client: Socket, ...args: any[]) {
+    client.emit('clientConnected', client.id)
     this.logger.log(`Client connected: ${client.id}`);
   }
 }

@@ -1,9 +1,12 @@
 import { createStore } from 'vuex'
 
 export const store = createStore({
-  state () {
-    return {
-      socketId: ""
+  state: {
+    socketId: ""
+  },
+  mutations: {
+    update (state, id) {
+      state.socketId = id;
     }
   }
-})
+});
