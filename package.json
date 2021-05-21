@@ -30,7 +30,8 @@
     "@types/socket.io": "^2.1.13",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6"
+    "rxjs": "^6.6.6",
+    "socket.io": "^4.1.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.6.0",
