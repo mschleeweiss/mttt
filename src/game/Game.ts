@@ -102,7 +102,15 @@ export class Game {
         }
     }
 
-    public makeMove(): void {}
+    public makeMove(player: Player): void {
+        if (this.active) {
+            
+        }
+    }
+
+    private isMoveValid(): boolean {
+        return true;
+    }
 
     private updateGameStartable(): void {
         this.startable = this.isGameStartable();

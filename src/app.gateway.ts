@@ -9,16 +9,16 @@ import {
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
-import { Player } from './Player'
-import { Game } from './Game'
+import { Player } from './game/Player'
+import { Game } from './game/Game'
 
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer() server: Server;
-  private games: Map<String, Game>;
-  private players: Map<String, Player>
+  private games: Map<string, Game>;
+  private players: Map<string, Player>
   private logger: Logger;
 
   constructor() {
@@ -28,8 +28,8 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleConnection(client: Socket, ...args: any[]) {
-    const oldId = client.handshake.query.id;
-    const name = client.handshake.query.name;
+    const oldId = client.handshake.query.id as string;
+    const name = client.handshake.query.name as string;
 
     let player = this.players.get(oldId);
     if (player) {

@@ -1,6 +1,8 @@
 import { Board } from './Board'
 import { PlayerType } from './PlayerType'
 
+const MAX_LEN = 3;
+
 export class MetaBoard {
     winner: PlayerType;
     draw: boolean;
@@ -16,7 +18,11 @@ export class MetaBoard {
         }
     }
 
-    toString () : string {
-        return "Foo";
+    getCell(i: number, j: number, k: number, l: number) {
+        if (0 <= i && i < MAX_LEN) {
+            if (0 <= j && j < MAX_LEN) {
+                return this.boards[i][j].getCell(k, l);
+            }
+        }
     }
 }
