@@ -1,7 +1,10 @@
-import { MetaBoard } from './MetaBoard'
+import { OuterBoard } from './OuterBoard'
+import { Move } from './Move';
 import { Player } from './Player'
 import { PlayerType } from './PlayerType'
 import { Settings } from './Settings'
+import { Board } from './FieldMatrix';
+import { IConquerable } from './IConquerable';
 
 export class Game {
     readonly id: string;
@@ -14,9 +17,10 @@ export class Game {
 
     readonly settings: Settings;
 
-    readonly board: MetaBoard;
+    readonly outerBoard: OuterBoard;
     private readonly players: Player[];
-    readonly teams: Object;
+    readonly teams: Map<PlayerType, Array<Player>>;
+    private moves: Move[];
     private currentPlayer: Player;
 
     constructor(admin: Player) {
@@ -27,12 +31,12 @@ export class Game {
         this.active = false;
         this.over = false;
         this.settings = new Settings(0);
-        this.board = new MetaBoard();
+        this.outerBoard = new OuterBoard();
         this.players = [];
-        this.teams = {
-            [PlayerType.X]: [],
-            [PlayerType.O]: []
-        }
+        this.moves = [];
+        this.teams = new Map();
+        this.teams.set(PlayerType.X, []);
+        this.teams.set(PlayerType.O, []);
     }
 
     public addPlayer(player: Player) {
@@ -102,14 +106,53 @@ export class Game {
         }
     }
 
-    public makeMove(player: Player): void {
-        if (this.active) {
-            
+    public makeMove(move: Move): void {
+        if (this.isMoveValid(move)) {
+            const currentPlayerInTeamX = this.teams.get(PlayerType.X).includes(this.currentPlayer);
+            const playerType = currentPlayerInTeamX ? PlayerType.X : PlayerType.NONE;
+
+            const cell = this.outerBoard.getCell(move.coordinates);
+            cell.conquerer = playerType;
+            this.updateState(move);
         }
     }
+    updateState(move: Move) {
+        this.moves.push(move);
+        this.outerBoard.getBoard(move.coordinates);
+    }
 
-    private isMoveValid(): boolean {
-        return true;
+    /**
+     * 
+     * @param row Row coordinate of the last changed field
+     * @param col Col coordinate of the last changed field
+     * @param board Board which was just changed where we want to determine a winner
+     */
+    private updateBoardState(row: number, col: number, board: Board) {
+        const relevantFields = [
+            board.getRowFields(row),
+            board.getColFields(col)
+        ];
+
+        if (!(row + col % 2)) {
+            relevantFields.push(board.getDiagonalFields());
+            relevantFields.push(board.getAntidiagonalFields());
+        }
+
+        const hasWinner = relevantFields.some((fields: IConquerable[]) => {
+            return false;
+        });
+    }
+
+    private checkIfTypesAreTheSame(type: PlayerType, index: number, cellTypes: PlayerType[]): boolean {
+            return type === cellTypes[0];
+        }
+
+    private isMoveValid(move: Move): boolean {
+        if (this.active) {
+            const cell = this.outerBoard.getCell(move.coordinates);
+            return cell.active && cell.conquerer === PlayerType.NONE;
+        }
+        return false;
     }
 
     private updateGameStartable(): void {
