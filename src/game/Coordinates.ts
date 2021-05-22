@@ -9,7 +9,7 @@ export class Coordinates {
     readonly innerRow: number;
     readonly innerCol: number;
 
-    constructor(outerRow: number, outerCol: number, innerRow: number, innerCol: number) {
+    constructor(outerRow: number, outerCol: number, innerRow?: number, innerCol?: number) {
         const valid = [...arguments]
             .every((val: number) => Coordinates.MIN_VALUE <= val && val <= Coordinates.MAX_VALUE);
 

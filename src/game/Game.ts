@@ -5,6 +5,17 @@ import { PlayerType } from './PlayerType'
 import { Settings } from './Settings'
 import { Board } from './Board';
 import { IConquerable } from './IConquerable';
+import { Cell } from './Cell';
+import { Coordinates } from './Coordinates';
+
+const getConquerer = (field: IConquerable) => field.conquerer;
+const hasConquerer = (conquerer: PlayerType) => conquerer !== PlayerType.NONE;
+const isConquererTheSame = (
+    conquerer: PlayerType,
+    index: number,
+    conquerers: PlayerType[]
+): boolean => conquerer === conquerers[0];
+const isBoardPlayable = (board: Board) => board.conquerer === PlayerType.NONE && !board.draw;
 
 export class Game {
     readonly id: string;
@@ -102,7 +113,7 @@ export class Game {
     public startGame(): void {
         if (this.startable) {
             this.active = true;
-            this.currentPlayer = this.teams[PlayerType.X][0];
+            this.determineCurrentPlayer();
         }
     }
 
@@ -116,14 +127,57 @@ export class Game {
             this.updateState(move);
         }
     }
-    updateState(move: Move) {
+
+    private updateState(move: Move) {
         this.moves.push(move);
         const lastChangedBoard = this.outerBoard.getBoard(move.coordinates);
         this.updateBoardState(move.coordinates.innerRow, move.coordinates.innerCol, lastChangedBoard);
         this.updateBoardState(move.coordinates.outerRow, move.coordinates.outerCol, this.outerBoard);
-        // to do: check if game is over
-        // update active state for next round
+        this.updateGameState(move);
         // update current player
+    }
+
+    private updateGameState(move: Move) {
+        this.disableAllFields();
+        if (this.outerBoard.conquerer !== PlayerType.NONE) {
+            this.active = false;
+            this.over = true;
+            return;
+        }
+        this.enableFields(move.coordinates.innerRow, move.coordinates.innerCol);
+        this.determineCurrentPlayer();
+    }
+
+    private enableFields(row: number, col: number) {
+        const targetBoard = this.outerBoard.getBoard(new Coordinates(row, col));
+        if (isBoardPlayable(targetBoard)) {
+            targetBoard.getFieldsFlat().forEach((cell: Cell) => {
+                cell.active = true;
+            });
+            return;
+        }
+        this.outerBoard.getFieldsFlat()
+            .filter(isBoardPlayable)
+            .forEach((board: Board) => {
+                board.getFieldsFlat().forEach((cell: Cell) => {
+                    cell.active = true;
+                });
+            });
+    }
+
+    private disableAllFields() {
+        this.outerBoard.getFieldsFlat().forEach((board: Board) => {
+            board.getFieldsFlat().forEach((cell: Cell) => {
+                cell.active = false;
+            });
+        });
+    }
+
+    private determineCurrentPlayer() {
+        const moveCount = this.moves.length;
+        const currentTeam = moveCount % 2 ? PlayerType.O : PlayerType.X;
+        const teamList = this.teams.get(currentTeam);
+        const memberCount = teamList.length;
     }
 
     /**
@@ -145,8 +199,8 @@ export class Game {
 
         const hasWinner = relevantFields.some((fields: IConquerable[]) => {
             return fields
-                .map((field: IConquerable) => field.conquerer)
-                .every(this.checkIfConquererIsTheSame);
+                .map(getConquerer)
+                .every(isConquererTheSame);
         });
 
         if (hasWinner) {
@@ -154,11 +208,7 @@ export class Game {
             return;
         }
 
-        // todo: determine draw
-    }
-
-    private checkIfConquererIsTheSame(conquerer: PlayerType, index: number, conquerers: PlayerType[]): boolean {
-        return conquerer === conquerers[0];
+        board.draw = board.getFieldsFlat().map(getConquerer).every(hasConquerer);
     }
 
     private isMoveValid(move: Move): boolean {
@@ -168,6 +218,8 @@ export class Game {
         }
         return false;
     }
+
+
 
     private updateGameStartable(): void {
         this.startable = this.isGameStartable();

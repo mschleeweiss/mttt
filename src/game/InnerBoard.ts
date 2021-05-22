@@ -34,44 +34,4 @@ export class InnerBoard extends Board {
             cell.active = false;
         })
     }
-
-    public calculateWinningState(coordinates: Coordinates): void {
-        // const row = coordinates.innerRow;
-        // const col = coordinates.innerCol;
-
-        // const relevantCells = [
-        //     this.getRowCells(row),
-        //     this.getColCells(col)
-        // ];
-        // if ((row + col) % 2 === 0) {
-        //     relevantCells.push(this.getDiagonalCells());
-        //     relevantCells.push(this.getAntidiagonalCells());
-        // }
-
-        // const hasWinner = relevantCells.some((cells: Cell[]) => this.haveCellsWinner(cells));
-        // if (hasWinner) {
-        //     this.conquerer = this.fields[row][col].conquerer;
-        //     return;
-        // }
-
-        // this.draw = this.getCells()
-        //     .map(this.getCellConquerer)
-        //     .every((type: PlayerType) => type !== PlayerType.NONE)
-    }
-
-    // private haveCellsWinner(cells: Cell[]): boolean {
-    //     return cells
-    //         .map(this.getCellConquerer)
-    //         .every(this.checkIfTypesAreTheSame);
-    // }
-
-
-
-    // private getCellConquerer(cell: Cell): PlayerType {
-    //     return cell.conquerer;
-    // }
-
-    // private checkIfTypesAreTheSame(type: PlayerType, index: number, cellTypes: PlayerType[]): boolean {
-    //     return type === cellTypes[0];
-    // }
 }
