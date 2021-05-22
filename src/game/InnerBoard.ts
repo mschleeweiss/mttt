@@ -1,4 +1,4 @@
-import { Board } from './FieldMatrix';
+import { Board } from './Board';
 import { Cell } from './Cell'
 import { Coordinates } from './Coordinates';
 

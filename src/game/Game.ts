@@ -3,7 +3,7 @@ import { Move } from './Move';
 import { Player } from './Player'
 import { PlayerType } from './PlayerType'
 import { Settings } from './Settings'
-import { Board } from './FieldMatrix';
+import { Board } from './Board';
 import { IConquerable } from './IConquerable';
 
 export class Game {
@@ -85,7 +85,7 @@ export class Game {
         const teamList = this.teams[team];
         const otherTeam = team === PlayerType.X ? PlayerType.O : PlayerType.X;
         const otherTeamList = this.teams[otherTeam];
-        
+
         if (this.players.includes(player)) {
             const oldTeamIdx = otherTeamList.indexOf(player);
             if (oldTeamIdx >= 0) {
@@ -118,7 +118,12 @@ export class Game {
     }
     updateState(move: Move) {
         this.moves.push(move);
-        this.outerBoard.getBoard(move.coordinates);
+        const lastChangedBoard = this.outerBoard.getBoard(move.coordinates);
+        this.updateBoardState(move.coordinates.innerRow, move.coordinates.innerCol, lastChangedBoard);
+        this.updateBoardState(move.coordinates.outerRow, move.coordinates.outerCol, this.outerBoard);
+        // to do: check if game is over
+        // update active state for next round
+        // update current player
     }
 
     /**
@@ -139,13 +144,22 @@ export class Game {
         }
 
         const hasWinner = relevantFields.some((fields: IConquerable[]) => {
-            return false;
+            return fields
+                .map((field: IConquerable) => field.conquerer)
+                .every(this.checkIfConquererIsTheSame);
         });
+
+        if (hasWinner) {
+            board.conquerer = board.fields[row][col].conquerer;
+            return;
+        }
+
+        // todo: determine draw
     }
 
-    private checkIfTypesAreTheSame(type: PlayerType, index: number, cellTypes: PlayerType[]): boolean {
-            return type === cellTypes[0];
-        }
+    private checkIfConquererIsTheSame(conquerer: PlayerType, index: number, conquerers: PlayerType[]): boolean {
+        return conquerer === conquerers[0];
+    }
 
     private isMoveValid(move: Move): boolean {
         if (this.active) {
@@ -161,7 +175,7 @@ export class Game {
 
     private isGameStartable(): boolean {
         const playerCountX = this.teams[PlayerType.X].length;
-        const playerCountO = this.teams[PlayerType.O].length 
+        const playerCountO = this.teams[PlayerType.O].length
         if (playerCountX === 0 || playerCountO === 0) {
             return false;
         }
