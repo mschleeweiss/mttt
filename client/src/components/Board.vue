@@ -12,21 +12,24 @@
         v-for="(outerCol, outerColIdx) in outerRow"
         :key="`outerCol-${outerColIdx}`"
       >
-
-         <div
+        <div
           class="innerRow"
           v-for="(innerRow, innerRowIdx) in outerCol.fields"
           :key="`innerRow-${innerRowIdx}`"
         >
-
-        <span
+          <span
             class="innerCol"
             v-for="(innerCol, innerColIdx) in innerRow"
             :key="`innerCol-${innerColIdx}`"
           >
-            <button>{{ `[${outerRowIdx},${outerColIdx},${innerRowIdx},${innerColIdx}]`}}</button>
+            <button :class="{ 
+              active: innerCol.active && innerCol.winner === ' ',
+              x: innerCol.winner === 'X',
+              o: innerCol.winner === 'O'
+            }">
+            </button>
           </span>
-        </div> 
+        </div>
       </div>
     </div>
   </div>
@@ -60,11 +63,11 @@ export default {
                 fields: [
                   [
                     {
-                      winner: ' ',
+                      winner: 'O',
                       active: false,
                     },
                     {
-                      winner: ' ',
+                      winner: 'X',
                       active: false,
                     },
                     {
@@ -520,15 +523,22 @@ export default {
 </script>
 
 <style scoped>
+.board-container {
+  width: 100%;
+  max-width: 23rem;
+  margin-top: 2rem;
+}
 .outerRow {
   border: 0px solid red;
   width: 100%;
 }
 
 .outerCol {
-  border: 2px solid green;
-  width: 32%;
+  border: 0px solid green;
+  width: 33.3%;
   float: left;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
 }
 
 .innerRow {
@@ -537,9 +547,24 @@ export default {
 
 .innerCol {
   border: 0px solid purple;
+  margin-left: 2px;
 }
 
 button {
-  height: 1rem;
+  height: 2rem;
+  width: 2rem;
+  border: 0px;
+  background-color: #282a36;
+}
+
+button.active {
+  background-color: #f1fa8c;
+  cursor: pointer;
+}
+button.x {
+  background-color: #8be9fd;
+}
+button.o {
+  background-color: #ff5555;
 }
 </style>

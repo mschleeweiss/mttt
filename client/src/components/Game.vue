@@ -105,6 +105,7 @@ export default {
   background-color: #44475a;
   flex-grow: 1;
   text-align: center;
+  align-items: center;
 }
 .title {
   margin-top: 1rem;
