@@ -4,18 +4,18 @@ import { Player } from './Player'
 import { PlayerType } from './PlayerType'
 import { Settings } from './Settings'
 import { Board } from './Board';
-import { IConquerable } from './IConquerable';
+import { IWinnable } from './IWinnable';
 import { Cell } from './Cell';
 import { Coordinates } from './Coordinates';
 
-const getConquerer = (field: IConquerable) => field.conquerer;
-const hasConquerer = (conquerer: PlayerType) => conquerer !== PlayerType.NONE;
-const isConquererTheSame = (
-    conquerer: PlayerType,
+const getWinner = (field: IWinnable) => field.winner;
+const hasWinner = (winner: PlayerType) => winner !== PlayerType.NONE;
+const isWinnerTheSame = (
+    winner: PlayerType,
     index: number,
-    conquerers: PlayerType[]
-): boolean => conquerer === conquerers[0];
-const isBoardPlayable = (board: Board) => board.conquerer === PlayerType.NONE && !board.draw;
+    winners: PlayerType[]
+): boolean => winner === winners[0];
+const isBoardPlayable = (board: Board) => board.winner === PlayerType.NONE && !board.draw;
 
 export class Game {
     readonly id: string;
@@ -123,7 +123,7 @@ export class Game {
             const playerType = currentPlayerInTeamX ? PlayerType.X : PlayerType.NONE;
 
             const cell = this.outerBoard.getCell(move.coordinates);
-            cell.conquerer = playerType;
+            cell.winner = playerType;
             this.updateState(move);
         }
     }
@@ -139,7 +139,7 @@ export class Game {
 
     private updateGameState(move: Move) {
         this.disableAllFields();
-        if (this.outerBoard.conquerer !== PlayerType.NONE) {
+        if (this.outerBoard.winner !== PlayerType.NONE) {
             this.active = false;
             this.over = true;
             return;
@@ -197,29 +197,27 @@ export class Game {
             relevantFields.push(board.getAntidiagonalFields());
         }
 
-        const hasWinner = relevantFields.some((fields: IConquerable[]) => {
+        const boardHasWinner = relevantFields.some((fields: IWinnable[]) => {
             return fields
-                .map(getConquerer)
-                .every(isConquererTheSame);
+                .map(getWinner)
+                .every(isWinnerTheSame);
         });
 
-        if (hasWinner) {
-            board.conquerer = board.fields[row][col].conquerer;
+        if (boardHasWinner) {
+            board.winner = board.fields[row][col].winner;
             return;
         }
 
-        board.draw = board.getFieldsFlat().map(getConquerer).every(hasConquerer);
+        board.draw = board.getFieldsFlat().map(getWinner).every(hasWinner);
     }
 
     private isMoveValid(move: Move): boolean {
         if (this.active) {
             const cell = this.outerBoard.getCell(move.coordinates);
-            return cell.active && cell.conquerer === PlayerType.NONE;
+            return cell.active && cell.winner === PlayerType.NONE;
         }
         return false;
     }
-
-
 
     private updateGameStartable(): void {
         this.startable = this.isGameStartable();

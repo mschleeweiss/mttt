@@ -1,12 +1,12 @@
-import { IConquerable } from './IConquerable';
+import { IWinnable } from './IWinnable';
 import { PlayerType } from './PlayerType'
 
-export class Cell implements IConquerable {
-    conquerer: PlayerType;
+export class Cell implements IWinnable {
+    winner: PlayerType;
     active: boolean;
 
     constructor() {
-        this.conquerer = PlayerType.NONE;
+        this.winner = PlayerType.NONE;
         this.active = false;
     }
 }

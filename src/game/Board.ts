@@ -1,41 +1,41 @@
 import { Coordinates } from "./Coordinates";
-import { IConquerable } from "./IConquerable";
+import { IWinnable } from "./IWinnable";
 import { PlayerType } from "./PlayerType";
 
-export abstract class Board implements IConquerable {
+export abstract class Board implements IWinnable {
 
-    conquerer: PlayerType;
+    winner: PlayerType;
     draw: boolean;
-    fields: IConquerable[][];
+    fields: IWinnable[][];
 
     constructor() {
         this.draw = false;
         this.fields = [];
-        this.conquerer = PlayerType.NONE;
+        this.winner = PlayerType.NONE;
     }
 
-    public getFieldsFlat(): IConquerable[] {
-        return ([] as IConquerable[]).concat(...this.fields);
+    public getFieldsFlat(): IWinnable[] {
+        return ([] as IWinnable[]).concat(...this.fields);
     }
 
-    public getDiagonalFields(): IConquerable[] {
-        return this.fields.map((rowCells: IConquerable[], index: number) => {
+    public getDiagonalFields(): IWinnable[] {
+        return this.fields.map((rowCells: IWinnable[], index: number) => {
             return rowCells[index];
         });
     }
 
-    public getAntidiagonalFields(): IConquerable[] {
-        return this.fields.map((rowCells: IConquerable[], index: number) => {
+    public getAntidiagonalFields(): IWinnable[] {
+        return this.fields.map((rowCells: IWinnable[], index: number) => {
             return rowCells[Coordinates.MAX_VALUE - index];
         });
     }
 
-    public getRowFields(row: number): IConquerable[] {
+    public getRowFields(row: number): IWinnable[] {
         return this.fields[row];
     }
 
-    public getColFields(col: number): IConquerable[] {
-        return this.fields.map((rowCells: IConquerable[]) => {
+    public getColFields(col: number): IWinnable[] {
+        return this.fields.map((rowCells: IWinnable[]) => {
             return rowCells[col];
         });
     }
