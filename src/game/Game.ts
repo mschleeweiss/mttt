@@ -30,7 +30,7 @@ export class Game {
 
     readonly outerBoard: OuterBoard;
     private readonly players: Player[];
-    readonly teams: Map<PlayerType, Array<Player>>;
+    readonly teams: Object;
     private moves: Move[];
     private currentPlayer: Player;
 
@@ -46,8 +46,10 @@ export class Game {
         this.players = [];
         this.moves = [];
         this.teams = new Map();
-        this.teams.set(PlayerType.X, []);
-        this.teams.set(PlayerType.O, []);
+        this.teams = {
+            [PlayerType.X]: [],
+            [PlayerType.O]: []
+        };
     }
 
     public addPlayer(player: Player) {
@@ -119,7 +121,7 @@ export class Game {
 
     public makeMove(move: Move): void {
         if (this.isMoveValid(move)) {
-            const currentPlayerInTeamX = this.teams.get(PlayerType.X).includes(this.currentPlayer);
+            const currentPlayerInTeamX = this.teams[PlayerType.X].includes(this.currentPlayer);
             const playerType = currentPlayerInTeamX ? PlayerType.X : PlayerType.NONE;
 
             const cell = this.outerBoard.getCell(move.coordinates);
@@ -176,7 +178,7 @@ export class Game {
     private determineCurrentPlayer() {
         const moveCount = this.moves.length;
         const currentTeam = moveCount % 2 ? PlayerType.O : PlayerType.X;
-        const teamList = this.teams.get(currentTeam);
+        const teamList = this.teams[currentTeam];
         const memberCount = teamList.length;
     }
 
