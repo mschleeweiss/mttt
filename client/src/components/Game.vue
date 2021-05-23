@@ -6,6 +6,7 @@
 
     <div class="content">
       <Lobby v-if="lobbyVisible" />
+      <Board v-if="boardVisible" />
       <NotFound v-if="notFound" />
     </div>
 
@@ -14,14 +15,14 @@
 </template>
 
 <script>
-import Button from '@/components/Button.vue';
 import Lobby from '@/components/Lobby.vue';
 import NotFound from '@/components/NotFound.vue';
+import Board from '@/components/Board.vue';
 
 export default {
   name: 'Game',
   components: {
-    'my-button': Button,
+    Board: Board,
     Lobby: Lobby,
     NotFound: NotFound,
   },
@@ -39,17 +40,17 @@ export default {
       return !this.game?.active && !this.game?.over && !this.notFound;
     },
     boardVisible() {
-      return this.game?.active && !this.game?.over && !this.notFound;
+      return (this.game?.active || this.game?.over) && !this.notFound;
     }
   },
   mounted() {
     this.$socket.client.emit('joinGame', {
       gameId: this.gameId,
-      name: 'Player 7',
+      name: this.$store.state.name,
     });
   },
   sockets: {
-    gameJoined(game) {
+    gameStateChanged(game) {
       this.game = game;
     },
     exception(data) {

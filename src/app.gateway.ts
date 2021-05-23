@@ -39,7 +39,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       player = new Player(client.id, name);
     }
     this.players.set(client.id, player);
-    
+
 
     client.emit('clientConnected', client.id);
     this.logger.log(`Client connected: ${client.id}`);
@@ -49,6 +49,10 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('createGame')
   handleCreateGame(client: Socket, payload: string): WsResponse<unknown> {
     const player = this.players.get(client.id);
+
+    if (!player) {
+      throw new WsException('player_not_found');
+    }
     const game = new Game(player);
     this.games.set(game.id, game);
     const event = 'gameCreated'
@@ -58,8 +62,11 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('joinGame')
   handleJoinGame(socket: Socket, payload: any): WsResponse<unknown> {
     const player = new Player(socket.id, payload.name);
-    const game = this.games.get(payload.gameId);
+    if (!player) {
+      throw new WsException('player_not_found');
+    }
 
+    const game = this.games.get(payload.gameId);
     if (!game) {
       throw new WsException('game_not_found');
     }
@@ -67,7 +74,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     game.addPlayer(player);
     socket.join(payload.gameId);
 
-    const event = 'gameJoined';
+    const event = 'gameStateChanged';
     return { event, data: game };
   }
 
@@ -80,17 +87,38 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     game.joinTeam(socket.id, payload.team);
-    this.server.to(payload.gameId).emit('lobbyChanged', game);
+    this.server.to(payload.gameId).emit('gameStateChanged', game);
   }
 
   @SubscribeMessage('changeName')
   handleChangeName(socket: Socket, payload: any): void {
-    
+
+  }
+
+  @SubscribeMessage('startGame')
+  handleStartGame(socket: Socket, payload: any): void {
+    const game = this.games.get(payload.gameId);
+    if (!game) {
+      throw new WsException('game_not_found');
+    }
+
+    if (game.admin.id !== socket.id) {
+      throw new WsException('not_authorized_to_start_game');
+    }
+    game.startGame();
+    this.server.to(payload.gameId).emit('gameStateChanged', game);
+
   }
 
   handleDisconnect(client: Socket) {
     this.logger.log(`Client disconnected: ${client.id}`);
-    this.players.get(client.id).connected = false;
+    const player = this.players.get(client.id)
+    
+    if (!player) {
+      return; // how can this happen??
+    }
+
+    player.connected = false;
     this.games.forEach((game) => {
       if (game.containsPlayer(client.id)) {
         game.removePlayer(client.id);
