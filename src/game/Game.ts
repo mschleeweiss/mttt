@@ -14,7 +14,7 @@ const isWinnerTheSame = (
     winner: PlayerType,
     index: number,
     winners: PlayerType[]
-): boolean => winner === winners[0];
+): boolean => winner === winners[0] && winner !== PlayerType.NONE;
 const isBoardPlayable = (board: Board) => board.winner === PlayerType.NONE && !board.draw;
 
 export class Game {
@@ -23,7 +23,7 @@ export class Game {
     admin: Player;
 
     private startable: boolean;
-    private active: boolean;
+    active: boolean;
     private over: boolean;
 
     readonly settings: Settings;
@@ -115,6 +115,7 @@ export class Game {
     public startGame(): void {
         if (this.startable) {
             this.active = true;
+            this.enableAllFields();
             this.determineCurrentPlayer();
         }
     }
@@ -122,7 +123,7 @@ export class Game {
     public makeMove(move: Move): void {
         if (this.isMoveValid(move)) {
             const currentPlayerInTeamX = this.teams[PlayerType.X].includes(this.currentPlayer);
-            const playerType = currentPlayerInTeamX ? PlayerType.X : PlayerType.NONE;
+            const playerType = currentPlayerInTeamX ? PlayerType.X : PlayerType.O;
 
             const cell = this.outerBoard.getCell(move.coordinates);
             cell.winner = playerType;
@@ -136,7 +137,6 @@ export class Game {
         this.updateBoardState(move.coordinates.innerRow, move.coordinates.innerCol, lastChangedBoard);
         this.updateBoardState(move.coordinates.outerRow, move.coordinates.outerCol, this.outerBoard);
         this.updateGameState(move);
-        // update current player
     }
 
     private updateGameState(move: Move) {
@@ -167,6 +167,14 @@ export class Game {
             });
     }
 
+    private enableAllFields() {
+        this.outerBoard.getFieldsFlat().forEach((board: Board) => {
+            board.getFieldsFlat().forEach((cell: Cell) => {
+                cell.active = true;
+            });
+        });
+    }
+
     private disableAllFields() {
         this.outerBoard.getFieldsFlat().forEach((board: Board) => {
             board.getFieldsFlat().forEach((cell: Cell) => {
@@ -180,6 +188,9 @@ export class Game {
         const currentTeam = moveCount % 2 ? PlayerType.O : PlayerType.X;
         const teamList = this.teams[currentTeam];
         const memberCount = teamList.length;
+        const movesPerTeam = Math.floor(moveCount / 2);
+        const currentPlayerIdx = movesPerTeam % memberCount
+        this.currentPlayer = teamList[currentPlayerIdx];
     }
 
     /**
@@ -193,11 +204,14 @@ export class Game {
             board.getRowFields(row),
             board.getColFields(col)
         ];
-
-        if (!(row + col % 2)) {
+        console.log(row, col)
+        if (!((row + col) % 2)) {
             relevantFields.push(board.getDiagonalFields());
             relevantFields.push(board.getAntidiagonalFields());
         }
+
+        console.log(relevantFields)
+        console.log("-----------------")
 
         const boardHasWinner = relevantFields.some((fields: IWinnable[]) => {
             return fields
@@ -214,7 +228,7 @@ export class Game {
     }
 
     private isMoveValid(move: Move): boolean {
-        if (this.active) {
+        if (this.active && move.player === this.currentPlayer) {
             const cell = this.outerBoard.getCell(move.coordinates);
             return cell.active && cell.winner === PlayerType.NONE;
         }

@@ -3,14 +3,14 @@
     <Team team="X" :teams="teams" />
     <Team team="O" :teams="teams" />
 
-    <my-button
+    <ActionButton
       v-if="isAdmin"
       :click="startGame"
       :enabled="isStartable"
       color="green"
     >
       Start
-    </my-button>
+    </ActionButton>
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 <template>
   <div class="lobby-container">
-    <my-button :color="team == 'X' ? 'cyan' : 'red'" :click="joinTeam">
+    <ActionButton :color="team == 'X' ? 'cyan' : 'red'" :click="joinTeam">
       Join Team {{ team }}
-    </my-button>
+    </ActionButton>
     <ul>
       <li v-for="member in teamMembers" :key="member.id">{{ member.name }}</li>
       </ul>
@@ -10,13 +10,9 @@
 </template>
 
 <script>
-import Button from '@/components/Button.vue';
 
 export default {
   name: 'Lobby',
-  components: {
-    'my-button': Button,
-  },
   props: {
     teams: Object,
     team: String,

@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="header">
-      <my-button :click="copyUrl" color="black"> Copy invite link </my-button>
+      <ActionButton :click="copyUrl" color="black"> Copy invite link </ActionButton>
     </div>
 
     <div class="content">
       <Lobby v-if="lobbyVisible" />
-      <Board v-if="boardVisible" />
+      <Board v-if="boardVisible" :game="game" />
       <NotFound v-if="notFound" />
     </div>
 
@@ -45,8 +45,7 @@ export default {
   },
   mounted() {
     this.$socket.client.emit('joinGame', {
-      gameId: this.gameId,
-      name: this.$store.state.name,
+      gameId: this.gameId
     });
   },
   sockets: {

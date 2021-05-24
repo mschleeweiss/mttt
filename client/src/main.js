@@ -6,12 +6,14 @@ import { socket } from './socket';
 import { store } from './store';
 import { router } from './router';
 
-import Button from './components/Button'
+import ActionButton from './components/ActionButton'
+import AnaglyphText from './components/AnaglyphText'
 
 const app = createApp(App)
     .use(VueSocketIOExt, socket)
     .use(router)
     .use(store);
 
-app.component('my-button', Button)
+app.component('ActionButton', ActionButton);
+app.component('AnaglyphText', AnaglyphText);
 app.mount("#app");

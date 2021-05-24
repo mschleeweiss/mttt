@@ -39,5 +39,4 @@ export abstract class Board implements IWinnable {
             return rowCells[col];
         });
     }
-
 }

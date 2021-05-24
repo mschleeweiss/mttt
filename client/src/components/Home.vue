@@ -4,11 +4,11 @@
 
     <div class="content">
       <div class="title">
-        <h1 class="anaglyph">MTTT*</h1>
+        <AnaglyphText>MTTT*</AnaglyphText>
         <span class="subtitle">*Multimate Tic Tac Toe</span>
       </div>
       <div class="init">
-        <my-button :click="createGame" color="green">Create Game</my-button>
+        <ActionButton :click="createGame" color="green">Create Game</ActionButton>
       </div>
     </div>
 
