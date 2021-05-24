@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="header">Please donate ❤️</div>
+    <div class="header">Please donate ❤️ <font-awesome-icon icon="cog" /></div>
 
     <div class="content">
       <div class="title">
