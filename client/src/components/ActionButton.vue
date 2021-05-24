@@ -5,24 +5,9 @@
 </template>
 
 <script>
-const COLORS = {
-  green: {
-    bg: '#50fa7b',
-    fg: '#282a36',
-  },
-  cyan: {
-    bg: '#8be9fd',
-    fg: '#282a36',
-  },
-  red: {
-    bg: '#ff5555',
-    fg: '#282a36',
-  },
-  black: {
-    bg: '#282a36',
-    fg: '#f8f8f2',
-  },
-};
+
+import { colorCombinations } from '@/constants'
+
 export default {
   name: 'Button',
   props: {
@@ -37,8 +22,8 @@ export default {
     colorStyle() {
       const myStyle = {};
       if (this.enabled) {
-        myStyle.backgroundColor = COLORS[this.color].bg;
-        myStyle.color = COLORS[this.color].fg;
+        myStyle.backgroundColor = colorCombinations[this.color].bg;
+        myStyle.color = colorCombinations[this.color].fg;
       }
       return myStyle;
     },

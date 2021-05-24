@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+  <Snackbar color="green" :visible="snackbarVisible">URL copied!</Snackbar>
     <div class="header">
       <ActionButton :click="copyUrl" color="black"> Copy invite link </ActionButton>
     </div>
@@ -28,8 +29,9 @@ export default {
   },
   data() {
     return {
-      notFound: false,
       game: null,
+      notFound: false,
+      snackbarVisible: false,
     };
   },
   computed: {
@@ -66,6 +68,9 @@ export default {
       dummy.select();
       document.execCommand('copy');
       document.body.removeChild(dummy);
+
+      this.snackbarVisible = true;
+      window.setTimeout(() => this.snackbarVisible = false, 3000);
     },
   },
 };
