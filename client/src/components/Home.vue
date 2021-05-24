@@ -1,6 +1,11 @@
 <template>
   <div class="container">
-    <div class="header">Please donate ❤️ <font-awesome-icon icon="cog" /></div>
+    <div class="header">
+      <div>Please donate ❤️</div>
+      <ActionButton color="black">
+        <font-awesome-icon icon="cog" />
+      </ActionButton>
+    </div>
 
     <div class="content">
       <div class="title">
@@ -8,7 +13,9 @@
         <span class="subtitle">*Multimate Tic Tac Toe</span>
       </div>
       <div class="init">
-        <ActionButton :click="createGame" color="green">Create Game</ActionButton>
+        <ActionButton :click="createGame" color="green"
+          >Create Game</ActionButton
+        >
       </div>
     </div>
 
@@ -17,20 +24,19 @@
 </template>
 
 <script>
-
 export default {
   name: 'Home',
   sockets: {
     gameCreated(gameId) {
-      this.$router.push({ path: `/join/${gameId}` })
-    }
+      this.$router.push({ path: `/join/${gameId}` });
+    },
   },
   methods: {
     createGame() {
-      this.$socket.client.emit("createGame");
-    }
-  }
-}
+      this.$socket.client.emit('createGame');
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -44,6 +50,7 @@ export default {
 .footer {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 2rem;
   padding: 0.5rem 1rem;
   box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
