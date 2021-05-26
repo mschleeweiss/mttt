@@ -12,7 +12,10 @@ export default {
   name: 'Button',
   props: {
     click: Function,
-    color: String,
+    color: {
+      type: String,
+      default: "black"
+    },
     enabled: {
       type: Boolean,
       default: true,

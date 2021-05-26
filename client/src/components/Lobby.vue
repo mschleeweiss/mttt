@@ -20,7 +20,7 @@ import Team from '@/components/Team.vue';
 export default {
   name: 'Lobby',
   components: {
-    Team: Team,
+    Team,
   },
   computed: {
     gameId() {

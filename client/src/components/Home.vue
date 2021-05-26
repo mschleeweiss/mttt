@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <div>Please donate ❤️</div>
-      <ActionButton color="black">
+      <ActionButton color="black" @click="showDialog = true">
         <font-awesome-icon icon="cog" />
       </ActionButton>
     </div>
@@ -18,14 +18,24 @@
         >
       </div>
     </div>
-
     <div class="footer">Impressum dies das</div>
+    <Settings v-if="showDialog" @close="showDialog = false" />
   </div>
 </template>
 
 <script>
+import Settings from '@/components/Settings.vue'
+
 export default {
   name: 'Home',
+  components: {
+    Settings
+  },
+  data() {
+    return {
+      showDialog: false,
+    };
+  },
   sockets: {
     gameCreated(gameId) {
       this.$router.push({ path: `/join/${gameId}` });
@@ -53,17 +63,16 @@ export default {
   justify-content: space-between;
   height: 2rem;
   padding: 0.5rem 1rem;
-  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
   z-index: 1;
 }
 
 .header {
-  background: rgb(189, 147, 249);
   background: linear-gradient(
     90deg,
     rgba(189, 147, 249, 1) 0%,
     rgba(241, 250, 140, 1) 100%
   );
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
   color: #282a36;
 }
 .content {
@@ -82,21 +91,11 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.anaglyph {
-  box-sizing: content-box;
-  border: none;
-  font-family: 'Permanent Marker', Helvetica, sans-serif;
-  font-size: 5rem;
-  letter-spacing: 3px;
-  margin: 0;
-  text-align: center;
-  text-overflow: clip;
-  text-shadow: -4px 0 1px #8be9fd, 4px 0 1px #ff5555;
-}
 .subtitle {
   font-size: 0.5rem;
 }
 .footer {
   background: #282a36;
+  box-shadow: 0 -5px 10px 0 rgb(0 0 0 / 15%);
 }
 </style>

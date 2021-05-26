@@ -1,8 +1,10 @@
 <template>
   <div class="container">
-  <Snackbar color="green" :visible="snackbarVisible">URL copied!</Snackbar>
+    <Snackbar color="green" :visible="snackbarVisible">URL copied!</Snackbar>
     <div class="header">
-      <ActionButton :click="copyUrl" color="black"> Copy invite link </ActionButton>
+      <ActionButton :click="copyUrl" color="black">
+        Copy invite link
+      </ActionButton>
     </div>
 
     <div class="content">
@@ -23,9 +25,9 @@ import Board from '@/components/Board.vue';
 export default {
   name: 'Game',
   components: {
-    Board: Board,
-    Lobby: Lobby,
-    NotFound: NotFound,
+    Board,
+    Lobby,
+    NotFound,
   },
   data() {
     return {
@@ -43,11 +45,11 @@ export default {
     },
     boardVisible() {
       return (this.game?.active || this.game?.over) && !this.notFound;
-    }
+    },
   },
   mounted() {
     this.$socket.client.emit('joinGame', {
-      gameId: this.gameId
+      gameId: this.gameId,
     });
   },
   sockets: {
@@ -70,7 +72,7 @@ export default {
       document.body.removeChild(dummy);
 
       this.snackbarVisible = true;
-      window.setTimeout(() => this.snackbarVisible = false, 3000);
+      window.setTimeout(() => (this.snackbarVisible = false), 3000);
     },
   },
 };

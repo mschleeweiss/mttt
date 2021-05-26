@@ -28,6 +28,9 @@ body {
   color: #f8f8f2;
   font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
 }
+input {
+  font-family: inherit;
+}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

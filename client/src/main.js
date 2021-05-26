@@ -13,6 +13,7 @@ import { router } from './router';
 
 import ActionButton from './components/ActionButton'
 import AnaglyphText from './components/AnaglyphText'
+import Dialog from './components/Dialog'
 import Snackbar from './components/Snackbar'
 
 library.add(faCog)
@@ -25,5 +26,6 @@ const app = createApp(App)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('ActionButton', ActionButton);
 app.component('AnaglyphText', AnaglyphText);
+app.component('Dialog', Dialog);
 app.component('Snackbar', Snackbar);
 app.mount("#app");
