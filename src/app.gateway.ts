@@ -94,7 +94,18 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('changeName')
   handleChangeName(socket: Socket, payload: any): void {
+    const player = this.players.get(socket.id);
+    if (!player) {
+      throw new WsException('player_not_found');
+    }
 
+    player.name = payload.name;
+
+    this.games.forEach((game) => {
+      if (game.containsPlayer(socket.id)) {
+        socket.to(game.id).emit('gameStateChanged', game);
+      }
+    });
   }
 
   @SubscribeMessage('startGame')
@@ -150,7 +161,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (!game.active && game.containsPlayer(client.id)) {
         game.removePlayer(client.id);
         this.logger.log(`Current admin: ${game.admin}`);
-        client.to(game.id).emit('lobbyChanged', game);
+        client.to(game.id).emit('gameStateChanged', game);
       }
     });
   }

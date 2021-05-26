@@ -45,7 +45,7 @@ export default {
   top: 30px;
   font-size: 17px;
   box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
-  opacity: 0.75;
+  opacity: 0.9;
 }
 
 .snackbar.show {
@@ -61,7 +61,7 @@ export default {
   }
   to {
     top: 30px;
-    opacity: 0.75;
+    opacity: 0.9;
   }
 }
 </style>

@@ -6,6 +6,8 @@ import VueSocketIOExt from 'vue-socket.io-extended';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
+import { faLink } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 import { socket } from './socket';
 import { store } from './store';
@@ -17,6 +19,10 @@ import Dialog from './components/Dialog'
 import Snackbar from './components/Snackbar'
 
 library.add(faCog)
+library.add(faLink)
+library.add(faChevronLeft)
+
+import "@/assets/global.css"
 
 const app = createApp(App)
     .use(VueSocketIOExt, socket)

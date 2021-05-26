@@ -1,9 +1,17 @@
 <template>
   <div class="container">
-    <Snackbar color="green" :visible="snackbarVisible">URL copied!</Snackbar>
+    <Snackbar color="green" :visible="showSnackbar">URL copied!</Snackbar>
     <div class="header">
+      <div class="left">
+      <ActionButton class="smallMarginEnd" :click="copyUrl" color="black">
+        <font-awesome-icon icon="chevron-left" />
+      </ActionButton>
       <ActionButton :click="copyUrl" color="black">
-        Copy invite link
+        <font-awesome-icon icon="link" /> <span class="hidden-xs">Copy invite link</span>
+      </ActionButton>
+      </div>
+      <ActionButton color="black" @click="showDialog = true">
+        <font-awesome-icon icon="cog" />
       </ActionButton>
     </div>
 
@@ -14,6 +22,7 @@
     </div>
 
     <div class="footer">Impressum dies das</div>
+    <Settings v-if="showDialog" @close="showDialog = false" />
   </div>
 </template>
 
@@ -21,6 +30,7 @@
 import Lobby from '@/components/Lobby.vue';
 import NotFound from '@/components/NotFound.vue';
 import Board from '@/components/Board.vue';
+import Settings from '@/components/Settings.vue'
 
 export default {
   name: 'Game',
@@ -28,12 +38,14 @@ export default {
     Board,
     Lobby,
     NotFound,
+    Settings
   },
   data() {
     return {
       game: null,
       notFound: false,
-      snackbarVisible: false,
+      showSnackbar: false,
+      showDialog: false
     };
   },
   computed: {
@@ -71,8 +83,8 @@ export default {
       document.execCommand('copy');
       document.body.removeChild(dummy);
 
-      this.snackbarVisible = true;
-      window.setTimeout(() => (this.snackbarVisible = false), 3000);
+      this.showSnackbar = true;
+      window.setTimeout(() => (this.showSnackbar = false), 3000);
     },
   },
 };
@@ -91,7 +103,6 @@ export default {
   align-items: center;
   min-height: 2rem;
   padding: 0.5rem 1rem;
-  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
   z-index: 1;
 }
 
@@ -102,7 +113,10 @@ export default {
     rgba(189, 147, 249, 1) 0%,
     rgba(241, 250, 140, 1) 100%
   );
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
   color: #282a36;
+  display: flex;
+  justify-content: space-between;
 }
 
 .content {
@@ -122,21 +136,18 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.anaglyph {
-  box-sizing: content-box;
-  border: none;
-  font-family: 'Permanent Marker', Helvetica, sans-serif;
-  font-size: 5rem;
-  letter-spacing: 3px;
-  margin: 0;
-  text-align: center;
-  text-overflow: clip;
-  text-shadow: -4px 0 1px #8be9fd, 4px 0 1px #ff5555;
-}
 .subtitle {
   font-size: 0.5rem;
 }
 .footer {
   background: #282a36;
+  box-shadow: 0 -5px 10px 0 rgb(0 0 0 / 15%);
+
+}
+
+@media screen and (max-width: 576px) and (min-width: 0px) {
+  .hidden-xs {
+    display: none;
+  }
 }
 </style>
