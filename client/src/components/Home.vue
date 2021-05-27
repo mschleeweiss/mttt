@@ -69,8 +69,8 @@ export default {
 .header {
   background: linear-gradient(
     90deg,
-    rgba(189, 147, 249, 1) 0%,
-    rgba(241, 250, 140, 1) 100%
+    rgb(var(--purple)) 0%,
+    rgb(var(--yellow)) 100%
   );
   box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);
   color: #282a36;
@@ -78,7 +78,7 @@ export default {
 .content {
   display: flex;
   flex-direction: column;
-  background-color: #44475a;
+  background-color: rgb(var(--current-line));
   flex-grow: 1;
   text-align: center;
 }
@@ -95,7 +95,7 @@ export default {
   font-size: 0.5rem;
 }
 .footer {
-  background: #282a36;
+  background: rgb(var(--background));
   box-shadow: 0 -5px 10px 0 rgb(0 0 0 / 15%);
 }
 </style>

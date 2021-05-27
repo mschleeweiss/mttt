@@ -24,8 +24,8 @@ html, body {
   margin: 0;
 }
 body {
-  background-color: #282a36;
-  color: #f8f8f2;
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
   font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
 }
 input {

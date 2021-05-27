@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import "@/assets/global.css"
+
 export default {
   name: 'Board',
   props: {
@@ -100,7 +102,6 @@ export default {
   font-weight: bold;
 }
 .outerRow {
-  border: 0px solid red;
   width: 100%;
 }
 
@@ -123,23 +124,23 @@ button {
   width: 2rem;
   border: 0px;
   border-radius: 2px;
-  background-color: rgba(40, 42, 54, 0.6);
+  background-color: rgba(var(--background), 0.6);
 }
 
 button.active {
-  background-color: rgba(241, 250, 140, 0.6);
+  background-color: rgba(var(--yellow), 0.6);
   cursor: pointer;
   transition-duration: 0.3s;
 }
 
 button.active:hover {
-  background-color: rgba(241, 250, 140, 1);
+  background-color: rgba(var(--yellow), 1);
 }
 
 .x {
-  background-color: rgba(139, 233, 253, 0.75);
+  background-color: rgba(var(--cyan), 0.75);
 }
 .o {
-  background-color: rgba(255, 85, 85, 0.75);
+  background-color: rgba(var(--red), 0.75);
 }
 </style>

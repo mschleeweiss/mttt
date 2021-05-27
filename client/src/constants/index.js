@@ -20,3 +20,9 @@ export const colorCombinations = {
       fg: '#f8f8f2',
     },
   };
+
+  export const emoticons = {
+    flipTable: "(ﾉ °益°)ﾉ 彡 ┻━┻",
+    dead: "(✖╭╮✖)",
+    happy: "ヽ(•‿•)ノ"
+  }

@@ -48,7 +48,7 @@ export default {
 .modal-container {
   width: 300px;
   margin: 0px auto;
-  background-color: #44475a;
+  background-color: rgb(var(--current-line));
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
@@ -61,8 +61,8 @@ export default {
   padding: 0.5rem 1rem;
   background: linear-gradient(
     90deg,
-    rgb(139, 233, 253) 0%,
-    rgb(255, 184, 108) 100%
+    rgb(var(--cyan)) 0%,
+    rgb(var(--orange)) 100%
   );
   color: #282a36;
   box-shadow: 0 5px 10px 0 rgb(0 0 0 / 15%);

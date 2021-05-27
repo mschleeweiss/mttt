@@ -8,6 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { faLink } from '@fortawesome/free-solid-svg-icons'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { socket } from './socket';
 import { store } from './store';
@@ -21,6 +22,7 @@ import Snackbar from './components/Snackbar'
 library.add(faCog)
 library.add(faLink)
 library.add(faChevronLeft)
+library.add(faPlus)
 
 import "@/assets/global.css"
 

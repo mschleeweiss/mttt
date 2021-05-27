@@ -21,6 +21,6 @@ div {
   margin: 0;
   text-align: center;
   text-overflow: clip;
-  text-shadow: -4px 0 1px #8be9fd, 4px 0 1px #ff5555;
+  text-shadow: -4px 0 1px rgb(var(--cyan)), 4px 0 1px rgb(var(--red));
 }
 </style>

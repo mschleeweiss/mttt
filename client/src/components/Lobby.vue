@@ -1,16 +1,19 @@
 <template>
   <div class="lobby-container">
-    <Team team="X" :teams="teams" />
-    <Team team="O" :teams="teams" />
-
-    <ActionButton
-      v-if="isAdmin"
-      :click="startGame"
-      :enabled="isStartable"
-      color="green"
-    >
-      Start
-    </ActionButton>
+    <div class="players">
+      <Team team="X" :teams="teams" />
+      <Team team="O" :teams="teams" />
+    </div>
+    <div class="admintools">
+      <ActionButton
+        v-if="isAdmin"
+        :click="startGame"
+        :enabled="isStartable"
+        color="green"
+      >
+        Start
+      </ActionButton>
+    </div>
   </div>
 </template>
 
@@ -61,4 +64,37 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.lobby-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.players {
+  width: 35%;
+  height: 100%;
+  box-shadow: 0px 0px 10px rgb(0 0 0 / 20%);
+
+}
+
+.admintools {
+  width: 65%;
+  box-sizing: border-box;
+  padding: 2rem;
+
+}
+
+@media screen and (max-width: 576px) and (min-width: 0px) {
+  .players {
+    width: 100%;
+    height: initial;
+  }
+
+  .admintools {
+    width: 100%;
+    height: initial;
+  }
+}
 </style>

@@ -41,7 +41,7 @@ input {
   margin: 0.5rem 0;
   box-sizing: border-box;
   font-size: 1rem;
-  background-color: #282a36;
+  background-color: rgb(var(--background));
   border: 1px solid #121319;
   border-radius: 2px;
   color: #f8f8f2;
@@ -49,6 +49,6 @@ input {
 }
 
 input:focus {
-  border: 1px solid rgb(98, 114, 164);
+  border: 1px solid rgb(var(--purple));
 }
 </style>
