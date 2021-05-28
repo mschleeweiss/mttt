@@ -24,7 +24,7 @@ export class Game {
 
     private startable: boolean;
     active: boolean;
-    private over: boolean;
+    over: boolean;
 
     readonly settings: Settings;
 

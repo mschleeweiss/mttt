@@ -6,7 +6,8 @@
         <font-awesome-icon icon="plus" />
       </ActionButton>
     </div>
-    <ul>
+  <div class="emptylist" v-if="!teamMembers.length">Nobody joined</div>
+    <ul v-if="teamMembers.length">
       <li v-for="member in teamMembers" :key="member.id">{{ member.name }}</li>
     </ul>
   </div>
@@ -24,7 +25,7 @@ export default {
       return this.$route.params.gameid;
     },
     teamMembers() {
-      return this.teams[this.team];
+      return this.teams[this.team] ?? [];
     },
   },
   methods: {
@@ -52,11 +53,6 @@ li {
   padding: 0.5rem 1rem;
 }
 
-.team-panel {
-  z-index: 1;
-  box-sizing: border-box;
-}
-
 .header {
   display: flex;
   align-items: flex-end;
@@ -64,6 +60,10 @@ li {
   border-bottom: 1px solid rgb(var(--background));
   padding: 0.5rem;
   font-weight: 900;
+}
+
+.emptylist {
+  padding: 0.5rem;
 }
 
 .circle {

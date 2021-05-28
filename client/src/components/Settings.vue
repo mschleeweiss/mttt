@@ -8,8 +8,8 @@
       </form>
     </template>
     <template v-slot:footer>
-        <ActionButton color="green" :click="onPressOK">OK</ActionButton>
-        </template>
+      <ActionButton color="green" :click="onPressOK">OK</ActionButton>
+    </template>
   </Dialog>
 </template>
 
@@ -17,19 +17,19 @@
 export default {
   name: 'Settings',
   data() {
-      return {
-          username: this.$store.state.name
-      }
+    return {
+      username: this.$store.state.name,
+    };
   },
   methods: {
-      onPressOK() {
-          if (0 < this.username.length && this.username.length < 20) {
-              this.$store.commit('updateName', this.username);
-              this.$socket.client.emit('changeName', { name: this.username });
-              this.$emit('close');
-          }
+    onPressOK() {
+      if (0 < this.username.length && this.username.length < 20) {
+        this.$store.commit('updateName', this.username);
+        this.$socket.client.emit('changeName', { name: this.username });
+        this.$emit('close');
       }
-  }
+    },
+  },
 };
 </script>
 

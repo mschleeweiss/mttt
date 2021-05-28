@@ -103,7 +103,8 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.games.forEach((game) => {
       if (game.containsPlayer(socket.id)) {
-        socket.to(game.id).emit('gameStateChanged', game);
+        console.log(game.id);
+        this.server.to(game.id).emit('gameStateChanged', game);
       }
     });
   }
@@ -158,7 +159,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     player.connected = false;
     this.games.forEach((game) => {
-      if (!game.active && game.containsPlayer(client.id)) {
+      if (!game.active && !game.over && game.containsPlayer(client.id)) {
         game.removePlayer(client.id);
         this.logger.log(`Current admin: ${game.admin}`);
         client.to(game.id).emit('gameStateChanged', game);

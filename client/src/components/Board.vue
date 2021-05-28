@@ -41,12 +41,16 @@
               <button
                 :class="{
                   active: innerCol.active && innerCol.winner === ' ',
+                  clickable: game.currentPlayer.id === socketId,
                   x: innerCol.winner === 'X',
                   o: innerCol.winner === 'O',
                 }"
-
-                @click="makeMove(outerRowIdx, outerColIdx, innerRowIdx, innerColIdx)"
-              ></button>
+                @click="
+                  makeMove(outerRowIdx, outerColIdx, innerRowIdx, innerColIdx)
+                "
+              >
+                {{ innerCol.winner }}
+              </button>
             </span>
           </div>
         </div>
@@ -56,7 +60,7 @@
 </template>
 
 <script>
-import "@/assets/global.css"
+import '@/assets/global.css';
 
 export default {
   name: 'Board',
@@ -70,10 +74,15 @@ export default {
     socketId() {
       return this.$store.state.socketId;
     },
+    myTeam() {
+      const isX = this.game?.teams.X.map((p) => p.id).includes(this.socketId);
+      const isO = this.game?.teams.O.map((p) => p.id).includes(this.socketId);
+
+      return isX ? 'X' : isO ? 'O' : ' ';
+    },
   },
   methods: {
     makeMove(outerRow, outerCol, innerRow, innerCol) {
-      debugger //eslint-disable-line
       this.$socket.client.emit('makeMove', {
         outerRow,
         outerCol,
@@ -115,6 +124,10 @@ export default {
   box-sizing: border-box;
 }
 
+.innerRow {
+  display: inline-flex;
+}
+
 .innerCol {
   margin-left: 2px;
 }
@@ -125,15 +138,16 @@ button {
   border: 0px;
   border-radius: 2px;
   background-color: rgba(var(--background), 0.6);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 button.active {
   background-color: rgba(var(--yellow), 0.6);
-  cursor: pointer;
   transition-duration: 0.3s;
 }
 
-button.active:hover {
+button.active.clickable:hover {
+  cursor: pointer;
   background-color: rgba(var(--yellow), 1);
 }
 

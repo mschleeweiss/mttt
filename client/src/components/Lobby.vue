@@ -5,8 +5,10 @@
       <Team team="O" :teams="teams" />
     </div>
     <div class="admintools">
+      <div v-if="isAdmin && !isStartable">To start a game, both teams must have at least one member</div>
       <ActionButton
         v-if="isAdmin"
+        class="startBtn"
         :click="startGame"
         :enabled="isStartable"
         color="green"
@@ -76,14 +78,16 @@ export default {
   width: 35%;
   height: 100%;
   box-shadow: 0px 0px 10px rgb(0 0 0 / 20%);
-
 }
 
 .admintools {
   width: 65%;
   box-sizing: border-box;
   padding: 2rem;
+}
 
+.startBtn {
+  margin: 1rem;
 }
 
 @media screen and (max-width: 576px) and (min-width: 0px) {

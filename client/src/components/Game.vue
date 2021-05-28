@@ -3,14 +3,15 @@
     <Snackbar color="green" :visible="showSnackbar">URL copied!</Snackbar>
     <div class="header">
       <div class="left">
-      <ActionButton class="smallMarginEnd" :click="copyUrl" color="black">
-        <font-awesome-icon icon="chevron-left" />
-      </ActionButton>
-      <ActionButton :click="copyUrl" color="black">
-        <font-awesome-icon icon="link" /> <span class="hidden-xs">Copy invite link</span>
-      </ActionButton>
+        <ActionButton class="smallMarginEnd" :click="copyUrl" color="black">
+          <font-awesome-icon icon="chevron-left" />
+        </ActionButton>
+        <ActionButton :click="copyUrl" color="black">
+          <font-awesome-icon icon="link" />
+          <span class="hidden-xs"> Copy invite link</span>
+        </ActionButton>
       </div>
-      <ActionButton color="black" @click="showDialog = true">
+      <ActionButton color="black" @click="showSettings = true">
         <font-awesome-icon icon="cog" />
       </ActionButton>
     </div>
@@ -22,7 +23,19 @@
     </div>
 
     <div class="footer">Impressum dies das</div>
-    <Settings v-if="showDialog" @close="showDialog = false" />
+    <Settings v-if="showSettings" @close="showSettings = false" />
+    <Dialog v-if="showGameOver" @close="showGameOver = false">
+      <template v-slot:header>Game over!</template>
+      <template v-slot:body>
+        <AnaglyphText class="gameOverEmote">{{ gameOverMsg }}</AnaglyphText>
+        <div class="gameOverTxt">
+          Team {{ game.outerBoard.winner }} has won the game
+        </div>
+      </template>
+      <template v-slot:footer>
+        <ActionButton color="green" :click="onCloseGameOver">OK</ActionButton>
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -30,7 +43,9 @@
 import Lobby from '@/components/Lobby.vue';
 import NotFound from '@/components/NotFound.vue';
 import Board from '@/components/Board.vue';
-import Settings from '@/components/Settings.vue'
+import Settings from '@/components/Settings.vue';
+
+import { emoticons } from '@/constants';
 
 export default {
   name: 'Game',
@@ -38,25 +53,40 @@ export default {
     Board,
     Lobby,
     NotFound,
-    Settings
+    Settings,
   },
   data() {
     return {
       game: null,
       notFound: false,
       showSnackbar: false,
-      showDialog: false
+      showSettings: false,
+      showGameOver: false,
     };
   },
   computed: {
     gameId() {
       return this.$route.params.gameid;
     },
+    socketId() {
+      return this.$store.state.socketId;
+    },
     lobbyVisible() {
       return !this.game?.active && !this.game?.over && !this.notFound;
     },
     boardVisible() {
       return (this.game?.active || this.game?.over) && !this.notFound;
+    },
+    myTeam() {
+      const isX = this.game?.teams.X.map((p) => p.id).includes(this.socketId);
+      const isO = this.game?.teams.O.map((p) => p.id).includes(this.socketId);
+
+      return isX ? 'X' : isO ? 'O' : ' ';
+    },
+    gameOverMsg() {
+      return this.game?.outerBoard.winner === this.myTeam
+        ? emoticons.happy
+        : emoticons.dead;
     },
   },
   mounted() {
@@ -67,6 +97,9 @@ export default {
   sockets: {
     gameStateChanged(game) {
       this.game = game;
+      if (game.over) {
+        this.showGameOver = true;
+      }
     },
     exception(data) {
       this.notFound = data.message === 'game_not_found';
@@ -85,6 +118,9 @@ export default {
 
       this.showSnackbar = true;
       window.setTimeout(() => (this.showSnackbar = false), 3000);
+    },
+    onCloseGameOver() {
+      this.showGameOver = false;
     },
   },
 };
@@ -138,9 +174,16 @@ export default {
   font-size: 0.5rem;
 }
 .footer {
-  background: rgb(var(--background));;
+  background: rgb(var(--background));
   box-shadow: 0 -5px 10px 0 rgb(0 0 0 / 15%);
+}
 
+.gameOverEmote {
+  font-size: 3rem;
+}
+
+.gameOverTxt {
+  text-align: center;
 }
 
 @media screen and (max-width: 576px) and (min-width: 0px) {
