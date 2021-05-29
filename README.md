@@ -29,14 +29,17 @@ npm run serve
 Frontend
 - [x] component for styled button with different types/colors
 - [x] component for Lobby (visible if game.lobby = true)
-- [ ] copy shareable link button
-- [ ] players can choose between X and O in lobby, display in a list (component TeamList?)
-- [ ] players can change name (store name in localStorage for future games)
-- [ ] once everyone is in a team show button to start the game
-- [ ] component for Board (visible if game.lobby = false)
+- [x] copy shareable link button
+- [x] players can choose between X and O in lobby, display in a list (component TeamList?)
+- [x] players can change name (store name in localStorage for future games)
+- [x] once everyone is in a team show button to start the game
+- [x] component for Board (visible if game.lobby = false)
+- [ ] leave a lobby
+- [ ] add blitz setting (timer)
 
 Backend
-- [ ] socket.io rooms (right now everyone receives every message)
-- [ ] socket event to start a game (lobby = false, every client in room receives message)
-- [ ] socket event to make a move
-- [ ] validation of moves in the backend
+- [x] socket.io rooms (right now everyone receives every message)
+- [x] socket event to start a game (lobby = false, every client in room receives message)
+- [x] socket event to make a move
+- [x] validation of moves in the backend
+- [ ] add blitz setting
