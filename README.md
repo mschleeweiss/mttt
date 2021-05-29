@@ -36,6 +36,7 @@ Frontend
 - [x] component for Board (visible if game.lobby = false)
 - [ ] leave a lobby
 - [ ] add blitz setting (timer)
+- [ ] heroku
 
 Backend
 - [x] socket.io rooms (right now everyone receives every message)
