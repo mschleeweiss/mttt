@@ -6,7 +6,7 @@ import { AppGateway } from './app.gateway';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client/dist'),
+      rootPath: join(__dirname, 'client/dist'),
     }),
   ],
   controllers: [],
