@@ -25,6 +25,7 @@
             x: outerCol.winner === 'X',
             o: outerCol.winner === 'O',
           }"
+          :data-winner="outerCol.winner"
           v-for="(outerCol, outerColIdx) in outerRow"
           :key="`outerCol-${outerColIdx}`"
         >
@@ -33,8 +34,9 @@
             v-for="(innerRow, innerRowIdx) in outerCol.fields"
             :key="`innerRow-${innerRowIdx}`"
           >
-            <span
+            <div
               class="innerCol"
+              :data-winner="innerCol.winner"
               v-for="(innerCol, innerColIdx) in innerRow"
               :key="`innerCol-${innerColIdx}`"
             >
@@ -48,10 +50,8 @@
                 @click="
                   makeMove(outerRowIdx, outerColIdx, innerRowIdx, innerColIdx)
                 "
-              >
-                {{ innerCol.winner }}
-              </button>
-            </span>
+              ></button>
+            </div>
           </div>
         </div>
       </div>
@@ -112,24 +112,42 @@ export default {
 }
 .outerRow {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .outerCol {
   border-radius: 4px;
   width: 32%;
-  float: left;
+  position: relative;
   margin: 2px;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.outerCol::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 4rem;
+  transform: translate(-50%, -50%);
+  content: attr(data-winner);
 }
 
 .innerRow {
-  display: inline-flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .innerCol {
-  margin-left: 2px;
+  display: flex;
 }
 
 button {

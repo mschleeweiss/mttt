@@ -5,10 +5,11 @@ const initParams = {
     id: sessionStorage.socketId ?? ""
 }
 
-const encodedParams = Object.keys(initParams)
+const query = Object.keys(initParams)
     .map(key => {
         return `${encodeURIComponent(key)}=${encodeURIComponent(initParams[key])}`;
     })
     .join("&");
 
-export const socket = io({ query: encodedParams })
+const isDev = process.env.NODE_ENV === "development";
+export const socket = isDev ? io("http://localhost:3000", { query }) : io({ query });
