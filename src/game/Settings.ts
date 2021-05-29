@@ -1,7 +1,7 @@
 export class Settings {
-    timeLimitInSeconds: number;
+  timeLimitInSeconds: number;
 
-    constructor(timeLimit: number) {
-        this.timeLimitInSeconds = timeLimit;
-    }
+  constructor(timeLimit: number) {
+    this.timeLimitInSeconds = timeLimit;
+  }
 }

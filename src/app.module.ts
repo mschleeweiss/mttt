@@ -12,4 +12,4 @@ import { AppGateway } from './app.gateway';
   controllers: [],
   providers: [AppGateway],
 })
-export class AppModule { }
+export class AppModule {}

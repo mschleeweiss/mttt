@@ -1,12 +1,12 @@
 import { IWinnable } from './IWinnable';
-import { PlayerType } from './PlayerType'
+import { PlayerType } from './PlayerType';
 
 export class Cell implements IWinnable {
-    winner: PlayerType;
-    active: boolean;
+  winner: PlayerType;
+  active: boolean;
 
-    constructor() {
-        this.winner = PlayerType.NONE;
-        this.active = false;
-    }
+  constructor() {
+    this.winner = PlayerType.NONE;
+    this.active = false;
+  }
 }

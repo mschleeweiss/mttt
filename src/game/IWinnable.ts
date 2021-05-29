@@ -1,5 +1,5 @@
-import { PlayerType } from "./PlayerType";
+import { PlayerType } from './PlayerType';
 
 export interface IWinnable {
-    winner: PlayerType
+  winner: PlayerType;
 }

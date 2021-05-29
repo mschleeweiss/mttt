@@ -5,22 +5,20 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   WsException,
-  WsResponse
+  WsResponse,
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
-import { Player } from './game/Player'
-import { Game } from './game/Game'
+import { Player } from './game/Player';
+import { Game } from './game/Game';
 import { Coordinates } from './game/Coordinates';
 import { Move } from './game/Move';
 
-
 @WebSocketGateway()
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
-
   @WebSocketServer() server: Server;
   private games: Map<string, Game>;
-  private players: Map<string, Player>
+  private players: Map<string, Player>;
   private logger: Logger;
 
   constructor() {
@@ -42,11 +40,9 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     this.players.set(client.id, player);
 
-
     client.emit('clientConnected', client.id);
     this.logger.log(`Client connected: ${client.id}`);
   }
-
 
   @SubscribeMessage('createGame')
   handleCreateGame(client: Socket, payload: string): WsResponse<unknown> {
@@ -57,7 +53,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     const game = new Game(player);
     this.games.set(game.id, game);
-    const event = 'gameCreated'
+    const event = 'gameCreated';
     return { event, data: game.id };
   }
 
@@ -103,7 +99,6 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.games.forEach((game) => {
       if (game.containsPlayer(socket.id)) {
-        console.log(game.id);
         this.server.to(game.id).emit('gameStateChanged', game);
       }
     });
@@ -121,7 +116,6 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     game.startGame();
     this.server.to(payload.gameId).emit('gameStateChanged', game);
-
   }
 
   @SubscribeMessage('makeMove')
@@ -137,10 +131,10 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     const coords = new Coordinates(
-      payload.outerRow, 
-      payload.outerCol, 
-      payload.innerRow, 
-      payload.innerCol
+      payload.outerRow,
+      payload.outerCol,
+      payload.innerRow,
+      payload.innerCol,
     );
 
     const move = new Move(coords, player);
@@ -151,7 +145,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleDisconnect(client: Socket) {
     this.logger.log(`Client disconnected: ${client.id}`);
-    const player = this.players.get(client.id)
+    const player = this.players.get(client.id);
 
     if (!player) {
       return; // how can this happen??
