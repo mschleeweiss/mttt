@@ -11,4 +11,4 @@ const encodedParams = Object.keys(initParams)
     })
     .join("&");
 
-export const socket = io("http://localhost:3000", { query: encodedParams })
+export const socket = io({ query: encodedParams })
