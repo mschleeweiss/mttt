@@ -51,11 +51,17 @@
                 @click="
                   makeMove(outerRowIdx, outerColIdx, innerRowIdx, innerColIdx)
                 "
-              >{{ innerCol.winner }}</button>
+              >
+                {{ innerCol.winner }}
+              </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div v-if="false" class="timer-container">
+      <div class="timer x">9:59</div>
+      <div class="timer o">8:50</div>
     </div>
   </div>
 </template>
@@ -133,7 +139,7 @@ export default {
   position: absolute;
   font-size: 8rem;
   content: attr(data-winner);
-  color: rgba(0,0,0,0.5)
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .innerRow {
@@ -186,10 +192,10 @@ button.active.clickable:hover {
     box-shadow: 0 0 0 0 rgba(var(--red), 0.8);
   }
   70% {
-      box-shadow: 0 0 0 10px rgba(var(--red), 0);
+    box-shadow: 0 0 0 10px rgba(var(--red), 0);
   }
   100% {
-      box-shadow: 0 0 0 0 rgba(var(--red), 0);
+    box-shadow: 0 0 0 0 rgba(var(--red), 0);
   }
 }
 
@@ -198,10 +204,19 @@ button.active.clickable:hover {
     box-shadow: 0 0 0 0 rgba(var(--cyan), 0.4);
   }
   70% {
-      box-shadow: 0 0 0 10px rgba(var(--cyan), 0);
+    box-shadow: 0 0 0 10px rgba(var(--cyan), 0);
   }
   100% {
-      box-shadow: 0 0 0 0 rgba(var(--cyan), 0);
+    box-shadow: 0 0 0 0 rgba(var(--cyan), 0);
   }
+}
+
+.timer-container {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

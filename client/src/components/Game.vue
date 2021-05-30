@@ -168,10 +168,11 @@ export default {
 .content {
   display: flex;
   flex-direction: column;
-  background-color: rgb(var(--current-line));
   flex-grow: 1;
-  text-align: center;
   align-items: center;
+  text-align: center;
+  position: relative;
+  background-color: rgb(var(--current-line));
 }
 .title {
   margin-top: 1rem;
