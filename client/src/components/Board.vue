@@ -50,7 +50,7 @@
                 @click="
                   makeMove(outerRowIdx, outerColIdx, innerRowIdx, innerColIdx)
                 "
-              ></button>
+              >{{ innerCol.winner }}</button>
             </div>
           </div>
         </div>
@@ -111,7 +111,6 @@ export default {
   font-weight: bold;
 }
 .outerRow {
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -119,25 +118,21 @@ export default {
 
 .outerCol {
   border-radius: 4px;
-  width: 32%;
   position: relative;
-  margin: 2px;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 0.5rem;
+  margin: 0.25rem;
 }
 
 .outerCol::before {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 4rem;
-  transform: translate(-50%, -50%);
+  font-size: 8rem;
   content: attr(data-winner);
+  color: rgba(0,0,0,0.5)
 }
 
 .innerRow {
@@ -148,6 +143,7 @@ export default {
 
 .innerCol {
   display: flex;
+  margin: 0.125rem;
 }
 
 button {
