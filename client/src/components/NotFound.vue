@@ -1,7 +1,7 @@
 <template>
   <div class="not-found">
     <div>
-      <AnaglyphText class="medium-sized"> (ﾉ °益°)ﾉ 彡 ┻━┻ </AnaglyphText>
+      <mttt-anaglyph-text class="medium-sized"> (ﾉ °益°)ﾉ 彡 ┻━┻ </mttt-anaglyph-text>
       <h1>Game not found</h1>
       <span>Tell your friend to send you the proper link!</span>
       <span class="subtext">Maybe the error is on our side... but probably not!</span>

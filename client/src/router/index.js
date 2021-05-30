@@ -8,7 +8,7 @@ const routes = [
         component: Home,
     },
     {
-        path: "/join/:gameid",
+        path: "/room/:gameid",
         component: Game,
     }
 ];

@@ -1,19 +1,19 @@
 <template>
   <div class="container">
-    <Snackbar color="green" :visible="showSnackbar">URL copied!</Snackbar>
+    <mttt-snackbar color="green" :visible="showSnackbar">URL copied!</mttt-snackbar>
     <div class="header">
       <div class="left">
-        <ActionButton class="smallMarginEnd" :click="copyUrl" color="black">
+        <mttt-button class="smallMarginEnd" :click="navBack" color="black">
           <font-awesome-icon icon="chevron-left" />
-        </ActionButton>
-        <ActionButton :click="copyUrl" color="black">
+        </mttt-button>
+        <mttt-button :click="copyUrl" color="black">
           <font-awesome-icon icon="link" />
           <span class="hidden-xs"> Copy invite link</span>
-        </ActionButton>
+        </mttt-button>
       </div>
-      <ActionButton color="black" @click="showSettings = true">
+      <mttt-button color="black" @click="showSettings = true">
         <font-awesome-icon icon="cog" />
-      </ActionButton>
+      </mttt-button>
     </div>
 
     <div class="content">
@@ -24,18 +24,18 @@
 
     <div class="footer">Impressum dies das</div>
     <Settings v-if="showSettings" @close="showSettings = false" />
-    <Dialog v-if="showGameOver" @close="showGameOver = false">
+    <mttt-dialog v-if="showGameOver" @close="showGameOver = false">
       <template v-slot:header>Game over!</template>
       <template v-slot:body>
-        <AnaglyphText class="gameOverEmote">{{ gameOverMsg }}</AnaglyphText>
+        <mttt-anaglyph-text class="gameOverEmote">{{ gameOverMsg }}</mttt-anaglyph-text>
         <div class="gameOverTxt">
           Team {{ game.outerBoard.winner }} has won the game
         </div>
       </template>
       <template v-slot:footer>
-        <ActionButton color="green" :click="onCloseGameOver">OK</ActionButton>
+        <mttt-button color="green" :click="onCloseGameOver">OK</mttt-button>
       </template>
-    </Dialog>
+    </mttt-dialog>
   </div>
 </template>
 
@@ -119,8 +119,20 @@ export default {
       this.showSnackbar = true;
       window.setTimeout(() => (this.showSnackbar = false), 3000);
     },
+    navBack() {
+      // todo: leave game when in lobby
+      // show warning when game is in progress? forfeit?
+      if (this.hasHistory()) {
+        this.$router.go(-1);
+      } else {
+        this.$router.push('/');
+      }
+    },
     onCloseGameOver() {
       this.showGameOver = false;
+    },
+    hasHistory() {
+      return window.history.length > 2;
     },
   },
 };

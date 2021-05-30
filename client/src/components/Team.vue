@@ -1,10 +1,9 @@
 <template>
   <div class="team-panel">
     <div class="header">
-      Team {{ team }}
-      <ActionButton class="circle" :color="team == 'X' ? 'cyan' : 'red'" :click="joinTeam">
-        <font-awesome-icon icon="plus" />
-      </ActionButton>
+      <mttt-button class="joinBtn" :color="team == 'X' ? 'cyan' : 'red'" :click="joinTeam">
+         Join Team {{ team }}
+      </mttt-button>
     </div>
   <div class="emptylist" v-if="!teamMembers.length">Nobody joined</div>
     <ul v-if="teamMembers.length">
@@ -43,30 +42,31 @@ export default {
 <style scoped>
 ul {
   list-style-type: none;
-  padding: 0;
+  padding: 0rem 4rem;
   margin: 0;
   text-align: start;
 }
 
 li {
-  border-bottom: 1px solid #363948;
   padding: 0.5rem 1rem;
+}
+
+li:not(:last-child) {
+  border-bottom: 1px solid #363948;
 }
 
 .header {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  border-bottom: 1px solid rgb(var(--background));
-  padding: 0.5rem;
-  font-weight: 900;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 3rem;
 }
 
 .emptylist {
   padding: 0.5rem;
 }
 
-.circle {
-  padding: 0.5rem 0.65rem;
+.joinBtn {
+  width: 100%;
 }
 </style>

@@ -2,19 +2,19 @@
   <div class="container">
     <div class="header">
       <div>Please donate ❤️</div>
-      <ActionButton color="black" @click="showDialog = true">
+      <mttt-button color="black" @click="showDialog = true">
         <font-awesome-icon icon="cog" />
-      </ActionButton>
+      </mttt-button>
     </div>
 
     <div class="content">
       <div class="title">
-        <AnaglyphText>MTTT*</AnaglyphText>
+        <mttt-anaglyph-text>MTTT*</mttt-anaglyph-text>
         <span class="subtitle">*Multimate Tic Tac Toe</span>
       </div>
       <div class="init">
-        <ActionButton :click="createGame" color="green"
-          >Create Game</ActionButton
+        <mttt-button :click="createGame" color="green"
+          >Create Game</mttt-button
         >
       </div>
     </div>
@@ -38,7 +38,7 @@ export default {
   },
   sockets: {
     gameCreated(gameId) {
-      this.$router.push({ path: `/join/${gameId}` });
+      this.$router.push({ path: `/room/${gameId}` });
     },
   },
   methods: {

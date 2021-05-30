@@ -1,5 +1,5 @@
 <template>
-  <Dialog>
+  <mttt-dialog>
     <template v-slot:header> Settings </template>
     <template v-slot:body>
       <form>
@@ -8,9 +8,9 @@
       </form>
     </template>
     <template v-slot:footer>
-      <ActionButton color="green" :click="onPressOK">OK</ActionButton>
+      <mttt-button color="green" :click="onPressOK">OK</mttt-button>
     </template>
-  </Dialog>
+  </mttt-dialog>
 </template>
 
 <script>

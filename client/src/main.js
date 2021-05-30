@@ -32,8 +32,8 @@ const app = createApp(App)
     .use(store);
 
 app.component('font-awesome-icon', FontAwesomeIcon)
-app.component('ActionButton', ActionButton);
-app.component('AnaglyphText', AnaglyphText);
-app.component('Dialog', Dialog);
-app.component('Snackbar', Snackbar);
+app.component('mttt-button', ActionButton);
+app.component('mttt-anaglyph-text', AnaglyphText);
+app.component('mttt-dialog', Dialog);
+app.component('mttt-snackbar', Snackbar);
 app.mount("#app");

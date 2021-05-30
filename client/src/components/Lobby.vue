@@ -6,7 +6,7 @@
     </div>
     <div class="admintools">
       <div v-if="isAdmin && !isStartable">To start a game, both teams must have at least one member</div>
-      <ActionButton
+      <mttt-button
         v-if="isAdmin"
         class="startBtn"
         :click="startGame"
@@ -14,7 +14,7 @@
         color="green"
       >
         Start
-      </ActionButton>
+      </mttt-button>
     </div>
   </div>
 </template>
