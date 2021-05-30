@@ -5,6 +5,7 @@
       <span
         class="playername"
         :class="{
+          pulse: socketId === game.currentPlayer.id,
           x: game.teams.X.map((p) => p.id).includes(game.currentPlayer.id),
           o: game.teams.O.map((p) => p.id).includes(game.currentPlayer.id),
         }"
@@ -170,5 +171,37 @@ button.active.clickable:hover {
 }
 .o {
   background-color: rgba(var(--red), 0.75);
+}
+
+.o.pulse {
+  animation: redpulse 2s infinite;
+}
+
+.x.pulse {
+  animation: cyanpulse 2s infinite;
+}
+
+@keyframes redpulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--red), 0.8);
+  }
+  70% {
+      box-shadow: 0 0 0 10px rgba(var(--red), 0);
+  }
+  100% {
+      box-shadow: 0 0 0 0 rgba(var(--red), 0);
+  }
+}
+
+@keyframes cyanpulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--cyan), 0.4);
+  }
+  70% {
+      box-shadow: 0 0 0 10px rgba(var(--cyan), 0);
+  }
+  100% {
+      box-shadow: 0 0 0 0 rgba(var(--cyan), 0);
+  }
 }
 </style>
