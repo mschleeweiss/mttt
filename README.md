@@ -37,6 +37,7 @@ Frontend
 - [ ] leave a lobby
 - [ ] add blitz setting (timer)
 - [ ] heroku
+- enter on name change
 
 Backend
 - [x] socket.io rooms (right now everyone receives every message)
