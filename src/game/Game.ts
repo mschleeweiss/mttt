@@ -24,6 +24,7 @@ export class Game {
   admin: Player;
 
   private startable: boolean;
+  private startTime: Date;
   active: boolean;
   over: boolean;
 
@@ -32,6 +33,7 @@ export class Game {
   readonly outerBoard: OuterBoard;
   private readonly players: Player[];
   readonly teams: Object;
+  readonly remainingTime: Object;
   private moves: Move[];
   private currentPlayer: Player;
 
@@ -42,7 +44,7 @@ export class Game {
     this.startable = false;
     this.active = false;
     this.over = false;
-    this.settings = new Settings(0);
+    this.settings = new Settings(false, -1);
     this.outerBoard = new OuterBoard();
     this.players = [];
     this.moves = [];
@@ -115,6 +117,7 @@ export class Game {
 
   public startGame(): void {
     if (this.startable) {
+      this.startTime = new Date();
       this.active = true;
       this.enableAllFields();
       this.determineCurrentPlayer();

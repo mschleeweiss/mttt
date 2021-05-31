@@ -1,7 +1,10 @@
 export class Settings {
-  timeLimitInSeconds: number;
+  blitzModeActive: boolean;
+  timeLimitInMinutes: number;
 
-  constructor(timeLimit: number) {
-    this.timeLimitInSeconds = timeLimit;
+  constructor(blitzModeActive: boolean, timeLimitInMinutes) {
+    this.blitzModeActive = blitzModeActive;
+    this.timeLimitInMinutes = timeLimitInMinutes;
+
   }
 }
