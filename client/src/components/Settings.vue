@@ -2,9 +2,9 @@
   <mttt-dialog>
     <template v-slot:header> Settings </template>
     <template v-slot:body>
-      <form>
+      <form @submit.prevent="">
         <label for="fname">Nickname</label>
-        <input type="text" v-model="username" />
+        <input type="text" v-model="username" @keyup.enter="onPressOK" />
       </form>
     </template>
     <template v-slot:footer>
@@ -23,6 +23,7 @@ export default {
   },
   methods: {
     onPressOK() {
+      debugger; //eslint-disable-line
       if (0 < this.username.length && this.username.length < 20) {
         this.$store.commit('updateName', this.username);
         this.$socket.client.emit('changeName', { name: this.username });

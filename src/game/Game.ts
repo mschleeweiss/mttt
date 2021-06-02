@@ -7,6 +7,9 @@ import { Board } from './Board';
 import { IWinnable } from './IWinnable';
 import { Cell } from './Cell';
 import { Coordinates } from './Coordinates';
+import { TimeLimitHandler } from './TimeLimitHandler';
+import { Observer, Subject } from './ObserverPattern';
+import { TimeLimit } from './TimeLimit';
 
 const getWinner = (field: IWinnable) => field.winner;
 const hasWinner = (winner: PlayerType) => winner !== PlayerType.NONE;
@@ -18,41 +21,41 @@ const isWinnerTheSame = (
 const isBoardPlayable = (board: Board) =>
   board.winner === PlayerType.NONE && !board.draw;
 
-export class Game {
-  readonly id: string;
-  readonly timestamp: Date;
+export class Game implements Observer {
   admin: Player;
+  readonly id: string = this.generateId(4);
+  readonly timestamp: Date = new Date();
 
-  private startable: boolean;
-  private startTime: Date;
-  active: boolean;
-  over: boolean;
+  private startable: boolean = false;
+  active: boolean = false;
+  over: boolean = false;
 
-  readonly settings: Settings;
-
-  readonly outerBoard: OuterBoard;
-  private readonly players: Player[];
-  readonly teams: Object;
-  readonly remainingTime: Object;
-  private moves: Move[];
+  readonly settings: Settings = new Settings(false, Infinity);
+  readonly outerBoard: OuterBoard = new OuterBoard();
+  private readonly players: Player[] = [];
+  readonly teams: Object = {
+    [PlayerType.X]: [],
+    [PlayerType.O]: [],
+  };;
+  private moves: Move[] = [];
   private currentPlayer: Player;
+  private timeLimitHandler: TimeLimitHandler;
+  private timeLimits: Object = {
+    [PlayerType.X]: new TimeLimit(Infinity, PlayerType.X),
+    [PlayerType.O]: new TimeLimit(Infinity, PlayerType.O),
+  };
 
   constructor(admin: Player) {
-    this.id = this.generateId(4);
-    this.timestamp = new Date();
     this.admin = admin;
-    this.startable = false;
-    this.active = false;
-    this.over = false;
-    this.settings = new Settings(false, -1);
-    this.outerBoard = new OuterBoard();
-    this.players = [];
-    this.moves = [];
-    this.teams = new Map();
-    this.teams = {
-      [PlayerType.X]: [],
-      [PlayerType.O]: [],
-    };
+  }
+
+  update(event: String): void {
+    if (event === "expired") {
+      const limitX = this.timeLimits.X as TimeLimit;
+      const winnerTeam = limitX.isExpired() ? PlayerType.O : PlayerType.X;
+      this.outerBoard.winner = winnerTeam;
+      this.updateGameState();
+    }
   }
 
   public addPlayer(player: Player) {
@@ -117,7 +120,7 @@ export class Game {
 
   public startGame(): void {
     if (this.startable) {
-      this.startTime = new Date();
+      this.timeLimitHandler = new TimeLimitHandler(this.moves, this.timeLimits.X, this.timeLimits.O)
       this.active = true;
       this.enableAllFields();
       this.determineCurrentPlayer();
@@ -150,17 +153,19 @@ export class Game {
       move.coordinates.outerCol,
       this.outerBoard,
     );
-    this.updateGameState(move);
+    this.updateGameState();
+    this.timeLimitHandler.update();
   }
 
-  private updateGameState(move: Move) {
+  private updateGameState() {
     this.disableAllFields();
     if (this.outerBoard.winner !== PlayerType.NONE) {
       this.active = false;
       this.over = true;
       return;
     }
-    this.enableFields(move.coordinates.innerRow, move.coordinates.innerCol);
+    const latestMove = this.moves[this.moves.length - 1];
+    this.enableFields(latestMove.coordinates.innerRow, latestMove.coordinates.innerCol);
     this.determineCurrentPlayer();
   }
 
