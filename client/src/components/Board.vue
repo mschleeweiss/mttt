@@ -180,11 +180,11 @@ button.active.clickable:hover {
 }
 
 .o.pulse {
-  animation: redpulse 2s infinite;
+  animation: redpulse 1s infinite;
 }
 
 .x.pulse {
-  animation: cyanpulse 2s infinite;
+  animation: cyanpulse 1s infinite;
 }
 
 @keyframes redpulse {

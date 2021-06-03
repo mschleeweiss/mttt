@@ -5,7 +5,9 @@
       <Team team="O" :teams="teams" />
     </div>
     <div class="admintools">
-      <div v-if="isAdmin && !isStartable">To start a game, both teams must have at least one member</div>
+      <div v-if="isAdmin && !isStartable">
+        To start a game, both teams must have at least one member
+      </div>
       <mttt-button
         v-if="isAdmin"
         class="startBtn"
@@ -15,8 +17,22 @@
       >
         Start
       </mttt-button>
-      <mttt-switch v-model="blitzActive" />
-      <mttt-slider v-model="timeLimit" min="1" max="10" />
+      <div class="settings">
+        <h2>Settings</h2>
+        <div class="timer-toggle">
+          <span>Activate timer</span>
+          <mttt-switch v-model="timerActive" />
+        </div>
+        <div class="init-time smallMarginTop">
+          <span>Initial time per team</span>
+          <mttt-slider
+            class="smallMarginTop"
+            v-model="timeLimit"
+            min="1"
+            max="10"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -50,7 +66,7 @@ export default {
     return {
       game: null,
       timeLimit: 4,
-      blitzActive: false,
+      timerActive: false,
     };
   },
   sockets: {
@@ -88,6 +104,27 @@ export default {
   width: 65%;
   box-sizing: border-box;
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settings {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}
+
+.timer-toggle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.init-time {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .startBtn {
