@@ -15,6 +15,8 @@
       >
         Start
       </mttt-button>
+      <mttt-switch v-model="blitzActive" />
+      <mttt-slider v-model="timeLimit" min="1" max="10" />
     </div>
   </div>
 </template>
@@ -47,6 +49,8 @@ export default {
   data() {
     return {
       game: null,
+      timeLimit: 4,
+      blitzActive: false,
     };
   },
   sockets: {

@@ -18,6 +18,8 @@ import ActionButton from './components/ActionButton'
 import AnaglyphText from './components/AnaglyphText'
 import Dialog from './components/Dialog'
 import Snackbar from './components/Snackbar'
+import Slider from './components/Slider'
+import Switch from './components/Switch'
 
 library.add(faCog)
 library.add(faLink)
@@ -36,4 +38,6 @@ app.component('mttt-button', ActionButton);
 app.component('mttt-anaglyph-text', AnaglyphText);
 app.component('mttt-dialog', Dialog);
 app.component('mttt-snackbar', Snackbar);
+app.component('mttt-slider', Slider);
+app.component('mttt-switch', Switch);
 app.mount("#app");
