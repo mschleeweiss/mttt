@@ -21,15 +21,16 @@
         <h2>Settings</h2>
         <div class="timer-toggle">
           <span>Activate timer</span>
-          <mttt-switch v-model="timerActive" />
+          <mttt-switch v-model="isTimerActive" :enabled="isAdmin" />
         </div>
         <div class="init-time smallMarginTop">
           <span>Initial time per team</span>
           <mttt-slider
             class="smallMarginTop"
             v-model="timeLimit"
-            min="1"
-            max="10"
+            :min="1"
+            :max="10"
+            :enabled="isAdmin && isTimerActive"
           />
         </div>
       </div>
@@ -61,12 +62,34 @@ export default {
     isStartable() {
       return this.game?.startable ?? false;
     },
+    isTimerActive: {
+      get: function () {
+        return this.game?.settings.timerActive ?? false;
+      },
+      set: function (timerActive) {
+        this.game.settings.timerActive = timerActive;
+        this.$socket.client.emit('changeSetting', {
+          gameId: this.gameId,
+          timerActive,
+        });
+      },
+    },
+    timeLimit: {
+      get: function () {
+        return this.game?.settings.timeLimitInMinutes ?? 0;
+      },
+      set: function (timeLimitInMinutes) {
+        this.game.settings.timeLimitInMinutes = timeLimitInMinutes;
+        this.$socket.client.emit('changeSetting', {
+          gameId: this.gameId,
+          timeLimitInMinutes,
+        });
+      },
+    },
   },
   data() {
     return {
       game: null,
-      timeLimit: 4,
-      timerActive: false,
     };
   },
   sockets: {

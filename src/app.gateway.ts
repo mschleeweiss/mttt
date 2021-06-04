@@ -104,6 +104,26 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
   }
 
+  @SubscribeMessage('changeSetting')
+  handleSettingName(socket: Socket, payload: any): void {
+    const player = this.players.get(socket.id);
+    if (!player) {
+      throw new WsException('player_not_found');
+    }
+
+    const game = this.games.get(payload.gameId);
+    if (!game) {
+      throw new WsException('game_not_found');
+    }
+
+    delete payload.gameId;
+    Object.keys(payload).forEach((key: string) => {
+      game.settings[key] = payload[key];
+    })
+
+    this.server.to(game.id).emit('gameStateChanged', game);
+  }
+
   @SubscribeMessage('startGame')
   handleStartGame(socket: Socket, payload: any): void {
     const game = this.games.get(payload.gameId);

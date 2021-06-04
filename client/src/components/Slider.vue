@@ -1,6 +1,13 @@
 <template>
-  <div class="slidecontainer">
-    <input type="range" :min="min" :max="max" v-model="inputVal" class="slider" />
+  <div class="slider-container" :class="{ disabled: !enabled }">
+    <input
+      type="range"
+      :min="min"
+      :max="max"
+      v-model="inputVal"
+      class="slider"
+      :disabled="!enabled"
+    />
     <div class="labels">
       <span>{{ min }}</span
       ><span>{{ max }}</span>
@@ -11,14 +18,31 @@
 <script>
 export default {
   name: 'Slider',
-  props: ['modelValue', 'min', 'max'],
+  props: {
+    modelValue: {
+      type: Number,
+      default: 50,
+    },
+    min: {
+      type: Number,
+      default: 0,
+    },
+    max: {
+      type: Number,
+      default: 100,
+    },
+    enabled: {
+      type: Boolean,
+      default: true,
+    },
+  },
   computed: {
     inputVal: {
       get() {
         return this.modelValue;
       },
       set(val) {
-        this.$emit('update:modelValue', val);
+        this.$emit('update:modelValue', +val);
       },
     },
   },
@@ -26,6 +50,10 @@ export default {
 </script>
 
 <style scoped>
+.slider-container.disabled {
+  opacity: 0.4;
+}
+
 .slider {
   appearance: none;
   width: 100%;
@@ -33,12 +61,13 @@ export default {
   border-radius: 5px;
   background: rgb(var(--background));
   outline: none;
-  opacity: 0.7;
+  opacity: 0.8;
   transition: opacity 0.2s;
 }
 
-.slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
+.slider:not(:disabled):hover {
+  cursor: pointer;
+  opacity: 1;
 }
 
 .slider::-webkit-slider-thumb {
@@ -47,6 +76,9 @@ export default {
   height: 25px;
   border-radius: 50%;
   background: rgb(var(--purple));
+}
+
+.slider::-webkit-slider-thumb:not(:disabled) {
   cursor: pointer;
 }
 
@@ -55,12 +87,15 @@ export default {
   height: 25px;
   border-radius: 50%;
   background: rgb(var(--yellow));
+}
+
+.slider::-moz-range-thumb:not(:disabled) {
   cursor: pointer;
 }
 
 .labels {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
 }
 </style>

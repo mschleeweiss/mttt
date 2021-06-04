@@ -30,7 +30,7 @@ export class Game implements Observer {
   active: boolean = false;
   over: boolean = false;
 
-  readonly settings: Settings = new Settings(false, Infinity);
+  readonly settings: Settings = new Settings();
   readonly outerBoard: OuterBoard = new OuterBoard();
   private readonly players: Player[] = [];
   readonly teams: Object = {
@@ -40,10 +40,7 @@ export class Game implements Observer {
   private moves: Move[] = [];
   private currentPlayer: Player;
   private timeLimitHandler: TimeLimitHandler;
-  private timeLimits: Object = {
-    [PlayerType.X]: new TimeLimit(Infinity, PlayerType.X),
-    [PlayerType.O]: new TimeLimit(Infinity, PlayerType.O),
-  };
+  private timeLimits: Object = {};
 
   constructor(admin: Player) {
     this.admin = admin;
@@ -51,7 +48,7 @@ export class Game implements Observer {
 
   update(event: String): void {
     if (event === "expired") {
-      const limitX = this.timeLimits.X as TimeLimit;
+      const limitX: TimeLimit = this.timeLimits[PlayerType.X];
       const winnerTeam = limitX.isExpired() ? PlayerType.O : PlayerType.X;
       this.outerBoard.winner = winnerTeam;
       this.updateGameState();
@@ -120,7 +117,11 @@ export class Game implements Observer {
 
   public startGame(): void {
     if (this.startable) {
-      this.timeLimitHandler = new TimeLimitHandler(this.moves, this.timeLimits.X, this.timeLimits.O)
+      const limitInSeconds = this.settings.timerActive ? this.settings.timeLimitInMinutes * 60 : Infinity;
+      this.timeLimits[PlayerType.X] = new TimeLimit(limitInSeconds, PlayerType.X);
+      this.timeLimits[PlayerType.O] = new TimeLimit(limitInSeconds, PlayerType.O);
+
+      this.timeLimitHandler = new TimeLimitHandler(this.moves, this.timeLimits[PlayerType.X], this.timeLimits[PlayerType.O])
       this.active = true;
       this.enableAllFields();
       this.determineCurrentPlayer();

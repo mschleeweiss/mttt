@@ -1,10 +1,6 @@
 export class Settings {
-  blitzModeActive: boolean;
-  timeLimitInMinutes: number;
-
-  constructor(blitzModeActive: boolean, timeLimitInMinutes) {
-    this.blitzModeActive = blitzModeActive;
-    this.timeLimitInMinutes = timeLimitInMinutes;
-
-  }
+  timerActive: boolean = false;
+  timeLimitInMinutes: number = Infinity;
+  readonly maxTimeLimit: number = 10;
+  readonly minTimeLimit: number = 1;
 }

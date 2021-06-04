@@ -1,6 +1,6 @@
 <template>
-  <label class="switch">
-    <input type="checkbox" v-model="inputVal" />
+  <label class="switch-container" :class="{ disabled: !enabled }">
+    <input type="checkbox" class="switch" v-model="inputVal" :disabled="!enabled" />
     <span class="slider round"></span>
   </label>
 </template>
@@ -8,7 +8,16 @@
 <script>
 export default {
   name: 'Switch',
-  props: ['modelValue', 'min', 'max'],
+  props: {
+      modelValue: {
+          type: Boolean,
+          default: true,
+      },
+      enabled: {
+          type: Boolean,
+          default: true
+      }
+  },
   computed: {
     inputVal: {
       get() {
@@ -23,7 +32,7 @@ export default {
 </script>
 
 <style scoped>
-.switch {
+.switch-container {
   position: relative;
   display: inline-block;
   width: 4rem;
@@ -31,10 +40,14 @@ export default {
 }
 
 /* Hide default HTML checkbox */
-.switch input {
+.switch-container input {
   opacity: 0;
   width: 0;
   height: 0;
+}
+
+.switch-container.disabled {
+    opacity: .4;
 }
 
 /* The slider */
