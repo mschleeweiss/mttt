@@ -4,27 +4,66 @@ import { Settings } from './Settings';
 import { TimeLimit } from './TimeLimit';
 
 export class TimeLimitHandler {
+    private state: HandlerState;
+
+    constructor(moves: Move[], limitX: TimeLimit, limitO: TimeLimit, settings: Settings) {
+        if (settings.timerActive) {
+            this.state = new ActiveHandler(settings, moves, new Map([
+                [PlayerType.X, limitX],
+                [PlayerType.O, limitO]
+            ]))
+        } else {
+            this.state = new InactiveHandler();
+        }
+    }
+
+    public update() {
+        this.state.update()
+    }
+}
+
+interface HandlerState {
+    settings: Settings;
     startTime: Date;
     moves: Move[];
     limits: Map<PlayerType, TimeLimit>;
+    
+    update(): void
+}
+
+class InactiveHandler implements HandlerState {
+
+    limits: Map<PlayerType, TimeLimit>;
+    moves: Move[];
+    settings: Settings;
+    startTime: Date = new Date();
+
+    update(): void {}
+
+}
+
+class ActiveHandler implements HandlerState {
+
+    limits: Map<PlayerType, TimeLimit>;
+    moves: Move[];
+    settings: Settings;
+    startTime: Date = new Date();
+
     private timestamps: Date[];
     private timeout: NodeJS.Timeout;
-    private settings: Settings;
 
-    constructor(moves: Move[], limitX: TimeLimit, limitO: TimeLimit, settings: Settings) {
+
+    constructor(settings: Settings, moves: Move[], limits: Map<PlayerType, TimeLimit>) {
         this.settings = settings;
         this.startTime = new Date();
-        this.limits = new Map([
-            [PlayerType.X, limitX],
-            [PlayerType.O, limitO]
-        ]);
+        this.limits = limits
         this.moves = moves;
         this.timestamps = [this.startTime];
 
         this.createTimeout();
     }
 
-    public update() {
+    update() {
         this.timestamps.push(this.moves[this.moves.length - 1].timestamp);
         const teamLimit = this.limits.get(this.determineTeamWhichMadeTheLastMove());
         const turnDurationInSeconds = this.calcLatestMoveDurationInSeconds();
@@ -70,35 +109,5 @@ export class TimeLimitHandler {
             console.log('timeout expired');
             teamLimit.decrementBy(teamLimit.durationInSeconds);
         }, teamLimit.durationInSeconds * 1000);
-    }
-}
-
-interface HandlerState {
-    update(): void
-}
-
-class ActiveHandler implements HandlerState {
-    startTime: Date;
-    moves: Move[];
-    limits: Map<PlayerType, TimeLimit>;
-    private timestamps: Date[];
-    private timeout: NodeJS.Timeout;
-    private settings: Settings;
-
-    constructor(moves: Move[], limitX: TimeLimit, limitO: TimeLimit, settings: Settings) {
-        this.settings = settings;
-        this.startTime = new Date();
-        this.limits = new Map([
-            [PlayerType.X, limitX],
-            [PlayerType.O, limitO]
-        ]);
-        this.moves = moves;
-        this.timestamps = [this.startTime];
-
-        // this.createTimeout();
-    }
-
-    update() {
-        
     }
 }

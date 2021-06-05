@@ -238,6 +238,7 @@ export default {
   box-sizing: border-box;
   padding: 0 2rem;
   justify-content: space-between;
+  pointer-events: none;
 }
 
 @media screen and (max-width: 576px) and (min-width: 0px) {
