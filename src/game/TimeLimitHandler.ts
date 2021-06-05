@@ -104,9 +104,7 @@ class ActiveHandler implements HandlerState {
         if (this.timeout) {
             clearTimeout(this.timeout)
         }
-        console.log(`timeout for team ${nextTeam}`)
         this.timeout = setTimeout(() => {
-            console.log('timeout expired');
             teamLimit.decrementBy(teamLimit.durationInSeconds);
         }, teamLimit.durationInSeconds * 1000);
     }

@@ -47,7 +47,6 @@ export class Game implements Observer {
   }
 
   update(event: String): void {
-    console.log("game.ts expired")
     if (event === "expired") {
       const limitX: TimeLimit = this.timeLimits[PlayerType.X];
       const winnerTeam = limitX.isExpired() ? PlayerType.O : PlayerType.X;

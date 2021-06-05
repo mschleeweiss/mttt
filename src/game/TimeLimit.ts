@@ -20,7 +20,6 @@ export class TimeLimit implements Subject {
 
   public decrementBy(durationInSeconds) {
     this.durationInSeconds -= durationInSeconds;
-    console.log(this.durationInSeconds);
     if (this.isExpired()) {
       this.notify();
     }
@@ -56,7 +55,6 @@ export class TimeLimit implements Subject {
    */
   public notify(): void {
     for (const observer of this.observers) {
-      console.log("notified")
       observer.update("expired");
     }
   }
