@@ -8,7 +8,7 @@ import { IWinnable } from './IWinnable';
 import { Cell } from './Cell';
 import { Coordinates } from './Coordinates';
 import { TimeLimitHandler } from './TimeLimitHandler';
-import { Observer, Subject } from './ObserverPattern';
+import { Observer } from './ObserverPattern';
 import { TimeLimit } from './TimeLimit';
 
 const getWinner = (field: IWinnable) => field.winner;
@@ -47,6 +47,7 @@ export class Game implements Observer {
   }
 
   update(event: String): void {
+    console.log("game.ts expired")
     if (event === "expired") {
       const limitX: TimeLimit = this.timeLimits[PlayerType.X];
       const winnerTeam = limitX.isExpired() ? PlayerType.O : PlayerType.X;
@@ -118,10 +119,17 @@ export class Game implements Observer {
   public startGame(): void {
     if (this.startable) {
       const limitInSeconds = this.settings.timerActive ? this.settings.timeLimitInMinutes * 60 : Infinity;
-      this.timeLimits[PlayerType.X] = new TimeLimit(limitInSeconds, PlayerType.X);
-      this.timeLimits[PlayerType.O] = new TimeLimit(limitInSeconds, PlayerType.O);
 
-      this.timeLimitHandler = new TimeLimitHandler(this.moves, this.timeLimits[PlayerType.X], this.timeLimits[PlayerType.O])
+      const limitX = new TimeLimit(limitInSeconds, PlayerType.X);
+      const limitO = new TimeLimit(limitInSeconds, PlayerType.O);
+
+      this.timeLimits[PlayerType.X] = limitX
+      this.timeLimits[PlayerType.O] = limitO
+
+      limitX.attach(this);
+      limitO.attach(this);
+
+      this.timeLimitHandler = new TimeLimitHandler(this.moves, limitX, limitO, this.settings)
       this.active = true;
       this.enableAllFields();
       this.determineCurrentPlayer();
@@ -138,6 +146,26 @@ export class Game implements Observer {
       const cell = this.outerBoard.getCell(move.coordinates);
       cell.winner = playerType;
       this.updateState(move);
+    }
+  }
+
+  public getState(): Object {
+    return {
+      admin: this.admin,
+      id: this.id,
+      startable: this.startable,
+      active: this.active,
+      over: this.over,
+      settings: this.settings,
+      outerBoard: this.outerBoard,
+      players: this.players,
+      teams: this.teams,
+      moves: this.moves,
+      currentPlayer: this.currentPlayer,
+      timeLimits: {
+        [PlayerType.X]: (this.timeLimits[PlayerType.X] as TimeLimit)?.getState(),
+        [PlayerType.O]: (this.timeLimits[PlayerType.O] as TimeLimit)?.getState(),
+      }
     }
   }
 

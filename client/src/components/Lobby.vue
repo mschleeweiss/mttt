@@ -24,7 +24,7 @@
           <mttt-switch v-model="isTimerActive" :enabled="isAdmin" />
         </div>
         <div class="init-time smallMarginTop">
-          <span>Initial time per team</span>
+          <span>Initial time per team: {{ timeLimit }} {{ timeLimit === 1 ? 'minute' : 'minutes'}}</span>
           <mttt-slider
             class="smallMarginTop"
             v-model="timeLimit"

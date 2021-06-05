@@ -11,10 +11,24 @@ export class TimeLimit implements Subject {
     this.team = team;
   }
 
+  public getState(): Object {
+    return {
+      durationInSeconds: this.durationInSeconds,
+      team: this.team,
+    };
+  }
+
   public decrementBy(durationInSeconds) {
     this.durationInSeconds -= durationInSeconds;
+    console.log(this.durationInSeconds);
     if (this.isExpired()) {
       this.notify();
+    }
+  }
+
+  public incrementBy(durationInSeconds) {
+    if (!this.isExpired()) {
+      this.durationInSeconds += durationInSeconds;
     }
   }
 
@@ -25,7 +39,7 @@ export class TimeLimit implements Subject {
 
   public attach(observer: Observer): void {
     const exists = this.observers.includes(observer);
-    if (exists) {
+    if (!exists) {
       this.observers.push(observer);
     }
   }
@@ -42,6 +56,7 @@ export class TimeLimit implements Subject {
    */
   public notify(): void {
     for (const observer of this.observers) {
+      console.log("notified")
       observer.update("expired");
     }
   }

@@ -73,7 +73,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     socket.join(payload.gameId);
 
     const event = 'gameStateChanged';
-    return { event, data: game };
+    return { event, data: game.getState() };
   }
 
   @SubscribeMessage('joinTeam')
@@ -85,7 +85,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     game.joinTeam(socket.id, payload.team);
-    this.server.to(payload.gameId).emit('gameStateChanged', game);
+    this.server.to(payload.gameId).emit('gameStateChanged', game.getState());
   }
 
   @SubscribeMessage('changeName')
@@ -99,7 +99,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.games.forEach((game) => {
       if (game.containsPlayer(socket.id)) {
-        this.server.to(game.id).emit('gameStateChanged', game);
+        this.server.to(game.id).emit('gameStateChanged', game.getState());
       }
     });
   }
@@ -121,7 +121,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       game.settings[key] = payload[key];
     })
 
-    this.server.to(game.id).emit('gameStateChanged', game);
+    this.server.to(game.id).emit('gameStateChanged', game.getState());
   }
 
   @SubscribeMessage('startGame')
@@ -135,7 +135,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       throw new WsException('not_authorized_to_start_game');
     }
     game.startGame();
-    this.server.to(payload.gameId).emit('gameStateChanged', game);
+    this.server.to(payload.gameId).emit('gameStateChanged', game.getState());
   }
 
   @SubscribeMessage('makeMove')
@@ -160,7 +160,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const move = new Move(coords, player);
     game.makeMove(move);
 
-    this.server.to(payload.gameId).emit('gameStateChanged', game);
+    this.server.to(payload.gameId).emit('gameStateChanged', game.getState());
   }
 
   handleDisconnect(client: Socket) {
@@ -176,7 +176,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (!game.active && !game.over && game.containsPlayer(client.id)) {
         game.removePlayer(client.id);
         this.logger.log(`Current admin: ${game.admin}`);
-        client.to(game.id).emit('gameStateChanged', game);
+        client.to(game.id).emit('gameStateChanged', game.getState());
       }
     });
   }

@@ -1,5 +1,6 @@
 import { Move } from './Move';
 import { PlayerType } from './PlayerType';
+import { Settings } from './Settings';
 import { TimeLimit } from './TimeLimit';
 
 export class TimeLimitHandler {
@@ -8,8 +9,10 @@ export class TimeLimitHandler {
     limits: Map<PlayerType, TimeLimit>;
     private timestamps: Date[];
     private timeout: NodeJS.Timeout;
+    private settings: Settings;
 
-    constructor(moves: Move[], limitX: TimeLimit, limitO: TimeLimit) {
+    constructor(moves: Move[], limitX: TimeLimit, limitO: TimeLimit, settings: Settings) {
+        this.settings = settings;
         this.startTime = new Date();
         this.limits = new Map([
             [PlayerType.X, limitX],
@@ -22,10 +25,12 @@ export class TimeLimitHandler {
     }
 
     public update() {
-        this.timestamps.push(this.moves[this.moves.length].timestamp);
+        this.timestamps.push(this.moves[this.moves.length - 1].timestamp);
         const teamLimit = this.limits.get(this.determineTeamWhichMadeTheLastMove());
         const turnDurationInSeconds = this.calcLatestMoveDurationInSeconds();
         teamLimit.decrementBy(turnDurationInSeconds);
+        // each turn add a few seconds - fischer system
+        teamLimit.incrementBy(this.settings.timeLimitInMinutes * 2);
         this.createTimeout();
     }
 
@@ -60,9 +65,40 @@ export class TimeLimitHandler {
         if (this.timeout) {
             clearTimeout(this.timeout)
         }
-
+        console.log(`timeout for team ${nextTeam}`)
         this.timeout = setTimeout(() => {
+            console.log('timeout expired');
             teamLimit.decrementBy(teamLimit.durationInSeconds);
         }, teamLimit.durationInSeconds * 1000);
+    }
+}
+
+interface HandlerState {
+    update(): void
+}
+
+class ActiveHandler implements HandlerState {
+    startTime: Date;
+    moves: Move[];
+    limits: Map<PlayerType, TimeLimit>;
+    private timestamps: Date[];
+    private timeout: NodeJS.Timeout;
+    private settings: Settings;
+
+    constructor(moves: Move[], limitX: TimeLimit, limitO: TimeLimit, settings: Settings) {
+        this.settings = settings;
+        this.startTime = new Date();
+        this.limits = new Map([
+            [PlayerType.X, limitX],
+            [PlayerType.O, limitO]
+        ]);
+        this.moves = moves;
+        this.timestamps = [this.startTime];
+
+        // this.createTimeout();
+    }
+
+    update() {
+        
     }
 }

@@ -42,6 +42,7 @@
               :key="`innerCol-${innerColIdx}`"
             >
               <button
+                class="cell"
                 :class="{
                   active: innerCol.active && innerCol.winner === ' ',
                   clickable: game.currentPlayer.id === socketId,
@@ -59,9 +60,17 @@
         </div>
       </div>
     </div>
-    <div v-if="false" class="timer-container">
-      <div class="timer x">9:59</div>
-      <div class="timer o">8:50</div>
+    <div v-if="game.settings.timerActive" class="timer-container">
+      <mttt-countdown
+        class="x"
+        :durationInSeconds="game.timeLimits.X.durationInSeconds"
+        :running="currentTeam === 'X' && gameActive"
+      />
+      <mttt-countdown
+        class="o"
+        :durationInSeconds="game.timeLimits.O.durationInSeconds"
+        :running="currentTeam === 'O' && gameActive"
+      />
     </div>
   </div>
 </template>
@@ -87,6 +96,15 @@ export default {
 
       return isX ? 'X' : isO ? 'O' : ' ';
     },
+    currentTeam() {
+      const isX = this.game?.teams.X.map((p) => p.id).includes(
+        this.game?.currentPlayer.id,
+      );
+      return isX ? 'X' : 'O';
+    },
+    gameActive() {
+      return this.game?.active ?? false;
+    }
   },
   methods: {
     makeMove(outerRow, outerCol, innerRow, innerCol) {
@@ -153,7 +171,7 @@ export default {
   margin: 0.125rem;
 }
 
-button {
+.cell {
   height: 2rem;
   width: 2rem;
   border: 0px;
@@ -162,12 +180,12 @@ button {
   color: rgba(0, 0, 0, 0.4);
 }
 
-button.active {
+.cell.active {
   background-color: rgba(var(--yellow), 0.6);
   transition-duration: 0.3s;
 }
 
-button.active.clickable:hover {
+.cell.active.clickable:hover {
   cursor: pointer;
   background-color: rgba(var(--yellow), 1);
 }
@@ -217,6 +235,25 @@ button.active.clickable:hover {
   top: 50%;
   left: 0;
   display: flex;
+  box-sizing: border-box;
+  padding: 0 2rem;
   justify-content: space-between;
+}
+
+@media screen and (max-width: 576px) and (min-width: 0px) {
+  .timer-container {
+    width: 100%;
+    position: relative;
+    top: initial;
+    left: initial;
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+  }
+
+  .cell {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
 }
 </style>

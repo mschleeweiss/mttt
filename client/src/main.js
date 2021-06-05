@@ -16,9 +16,10 @@ import { router } from './router';
 
 import ActionButton from './components/ActionButton'
 import AnaglyphText from './components/AnaglyphText'
+import Countdown from './components/Countdown'
 import Dialog from './components/Dialog'
-import Snackbar from './components/Snackbar'
 import Slider from './components/Slider'
+import Snackbar from './components/Snackbar'
 import Switch from './components/Switch'
 
 library.add(faCog)
@@ -34,10 +35,11 @@ const app = createApp(App)
     .use(store);
 
 app.component('font-awesome-icon', FontAwesomeIcon)
-app.component('mttt-button', ActionButton);
 app.component('mttt-anaglyph-text', AnaglyphText);
+app.component('mttt-button', ActionButton);
+app.component('mttt-countdown', Countdown);
 app.component('mttt-dialog', Dialog);
-app.component('mttt-snackbar', Snackbar);
 app.component('mttt-slider', Slider);
+app.component('mttt-snackbar', Snackbar);
 app.component('mttt-switch', Switch);
 app.mount("#app");
