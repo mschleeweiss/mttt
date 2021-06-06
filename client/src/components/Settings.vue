@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     onPressOK() {
-      debugger; //eslint-disable-line
       if (0 < this.username.length && this.username.length < 20) {
         this.$store.commit('updateName', this.username);
         this.$socket.client.emit('changeName', { name: this.username });
