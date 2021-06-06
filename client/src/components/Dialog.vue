@@ -46,7 +46,7 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 360px;
   margin: 0px auto;
   background-color: rgb(var(--current-line));
   border-radius: 4px;

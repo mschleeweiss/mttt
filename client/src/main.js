@@ -9,9 +9,10 @@ import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { faLink } from '@fortawesome/free-solid-svg-icons'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPaypal } from '@fortawesome/free-brands-svg-icons'
 
-import { socket } from './socket';
 import { store } from './store';
+import { socket } from './socket';
 import { router } from './router';
 
 import ActionButton from './components/ActionButton'
@@ -26,13 +27,14 @@ library.add(faCog)
 library.add(faLink)
 library.add(faChevronLeft)
 library.add(faPlus)
+library.add(faPaypal)
 
 import "@/assets/global.css"
 
 const app = createApp(App)
-    .use(VueSocketIOExt, socket)
     .use(router)
-    .use(store);
+    .use(store)
+    .use(VueSocketIOExt, socket);
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('mttt-anaglyph-text', AnaglyphText);

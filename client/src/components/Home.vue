@@ -1,8 +1,10 @@
 <template>
   <div class="container">
     <div class="header">
-      <div>Please donate ❤️</div>
-      <mttt-button color="black" @click="showDialog = true">
+      <mttt-button color="black" @click="showPaypalDialog = true">
+        <font-awesome-icon :icon="['fab', 'paypal']" />
+      </mttt-button>
+      <mttt-button color="black" @click="showSettingsDialog = true">
         <font-awesome-icon icon="cog" />
       </mttt-button>
     </div>
@@ -18,8 +20,20 @@
         >
       </div>
     </div>
-    <div class="footer">Impressum dies das</div>
-    <Settings v-if="showDialog" @close="showDialog = false" />
+    <div class="footer">
+    </div>
+    <Settings v-if="showSettingsDialog" @close="showSettingsDialog = false" />
+    <mttt-dialog v-if="showPaypalDialog">
+      <template v-slot:header> Donations </template>
+      <template v-slot:body>
+        This game will always be ad-free. But hosting it properly costs a few bucks each month. <br><br>To support this game, and my work, you can gift me some real-life coins on PayPal. <br><br>Every donation will be greatly appreciated ❤️
+        <span class="subtitle">Donations are voluntary. They come without a contract or service in return.</span>
+    </template>
+    <template v-slot:footer>
+      <mttt-button class="smallMarginEnd" color="black" @click="showPaypalDialog = false">Fuck off</mttt-button>
+      <mttt-button color="green" :click="onPressDonate">Donate</mttt-button>
+    </template>
+    </mttt-dialog>
   </div>
 </template>
 
@@ -33,7 +47,9 @@ export default {
   },
   data() {
     return {
-      showDialog: false,
+      showInfoDialog: false,
+      showPaypalDialog: false,
+      showSettingsDialog: false,
     };
   },
   sockets: {
@@ -45,6 +61,9 @@ export default {
     createGame() {
       this.$socket.client.emit('createGame');
     },
+    onPressDonate() {
+      window.open("https://paypal.me/mschleeweiss", "_blank");
+    }
   },
 };
 </script>

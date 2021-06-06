@@ -21,8 +21,6 @@
       <Board v-if="boardVisible" :game="game" />
       <NotFound v-if="notFound" />
     </div>
-
-    <div class="footer">Impressum dies das</div>
     <Settings v-if="showSettings" @close="showSettings = false" />
     <mttt-dialog v-if="showGameOver" @close="showGameOver = false">
       <template v-slot:header>Game over!</template>
@@ -185,10 +183,6 @@ export default {
 }
 .subtitle {
   font-size: 0.5rem;
-}
-.footer {
-  background: rgb(var(--background));
-  box-shadow: 0 -5px 10px 0 rgb(0 0 0 / 15%);
 }
 
 .gameOverEmote {
