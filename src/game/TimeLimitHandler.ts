@@ -5,16 +5,21 @@ import { TimeLimit } from './TimeLimit';
 
 export class TimeLimitHandler {
     private state: HandlerState;
+    private states: Map<boolean, HandlerState>;
 
     constructor(moves: Move[], limitX: TimeLimit, limitO: TimeLimit, settings: Settings) {
-        if (settings.timerActive) {
-            this.state = new ActiveHandler(settings, moves, new Map([
-                [PlayerType.X, limitX],
-                [PlayerType.O, limitO]
-            ]))
-        } else {
-            this.state = new InactiveHandler();
-        }
+
+        const limits = new Map([
+            [PlayerType.X, limitX],
+            [PlayerType.O, limitO]
+        ]);
+
+        this.states = new Map([
+            [true, new ActiveHandler(settings, moves, limits)],
+            [false, new InactiveHandler()]
+        ])
+
+        this.state = this.states.get(settings.timerActive);
     }
 
     public update() {
@@ -27,7 +32,7 @@ interface HandlerState {
     startTime: Date;
     moves: Move[];
     limits: Map<PlayerType, TimeLimit>;
-    
+
     update(): void
 }
 
@@ -38,8 +43,7 @@ class InactiveHandler implements HandlerState {
     settings: Settings;
     startTime: Date = new Date();
 
-    update(): void {}
-
+    update(): void { }
 }
 
 class ActiveHandler implements HandlerState {
@@ -68,7 +72,7 @@ class ActiveHandler implements HandlerState {
         const teamLimit = this.limits.get(this.determineTeamWhichMadeTheLastMove());
         const turnDurationInSeconds = this.calcLatestMoveDurationInSeconds();
         teamLimit.decrementBy(turnDurationInSeconds);
-        // each turn add a few seconds - fischer system
+        // each turn adds a few seconds - fischer system
         teamLimit.incrementBy(this.settings.timeLimitInMinutes * 2);
         this.createTimeout();
     }
