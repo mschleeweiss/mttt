@@ -116,7 +116,12 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       throw new WsException('game_not_found');
     }
 
+    if (game.admin.id !== socket.id) {
+      throw new WsException('not_authorized_to_change_settings');
+    }
+
     delete payload.gameId;
+
     Object.keys(payload).forEach((key: string) => {
       game.settings[key] = payload[key];
     })

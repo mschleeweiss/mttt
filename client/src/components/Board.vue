@@ -60,6 +60,8 @@
         </div>
       </div>
     </div>
+
+    <div><strong>{{ game.moves.length }} {{ game.moves.length === 1 ? 'move' : 'moves' }}</strong></div>
     <div v-if="game.settings.timerActive" class="timer-container">
       <mttt-countdown
         class="x"

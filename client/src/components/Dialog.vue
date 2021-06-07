@@ -58,6 +58,7 @@ export default {
   height: 2rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0.5rem 1rem;
   background: linear-gradient(
     90deg,

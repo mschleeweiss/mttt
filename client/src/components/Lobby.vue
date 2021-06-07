@@ -23,15 +23,19 @@
           <span>Activate timer</span>
           <mttt-switch v-model="isTimerActive" :enabled="isAdmin" />
         </div>
-        <div class="init-time smallMarginTop">
-          <span>Initial time per team: {{ timeLimit }} {{ timeLimit === 1 ? 'minute' : 'minutes'}}</span>
+        <div class="init-time smallMarginTop" v-if="isTimerActive">
+          <span>Time limit</span>
           <mttt-slider
-            class="smallMarginTop"
+            class="smallMarginTop smallMarginBottom"
             v-model="timeLimit"
             :min="1"
             :max="10"
-            :enabled="isAdmin && isTimerActive"
+            :enabled="isAdmin"
           />
+          <span>
+            <strong>{{ timeLimit }} {{ timeLimit === 1 ? 'minute' : 'minutes' }}</strong> (and an
+            additional <strong>{{ timeLimit * 2 }} seconds</strong> per move)
+          </span>
         </div>
       </div>
     </div>

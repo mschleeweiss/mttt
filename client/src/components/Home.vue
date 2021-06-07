@@ -24,9 +24,13 @@
     </div>
     <Settings v-if="showSettingsDialog" @close="showSettingsDialog = false" />
     <mttt-dialog v-if="showPaypalDialog">
-      <template v-slot:header> Donations </template>
+      <template v-slot:header> ❤️❤️❤️ Donations ❤️❤️❤️ </template>
       <template v-slot:body>
-        This game will always be ad-free. But hosting it properly costs a few bucks each month. <br><br>To support this game, and my work, you can gift me some real-life coins on PayPal. <br><br>Every donation will be greatly appreciated ❤️
+        This game will always be ad-free. But hosting it properly costs a few bucks each month. 
+        <br><br>
+        To support this game, and my work, you can gift me some real-life coins on PayPal. 
+        <br><br>
+        Every donation will be greatly appreciated ❤️
         <span class="subtitle">Donations are voluntary. They come without a contract or service in return.</span>
     </template>
     <template v-slot:footer>

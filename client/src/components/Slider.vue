@@ -7,7 +7,11 @@
       v-model="inputVal"
       class="slider"
       :disabled="!enabled"
+      list="stepList"
     />
+    <datalist id="stepList">
+      <option v-for="step in steps" :key="step">{{ step }}</option>
+    </datalist>
     <div class="labels">
       <span>{{ min }}</span
       ><span>{{ max }}</span>
@@ -37,6 +41,9 @@ export default {
     },
   },
   computed: {
+    steps() {
+      return [ ...Array(this.max - this.min + 1).keys() ].map(i => i + this.min);
+    },
     inputVal: {
       get() {
         return this.modelValue;
