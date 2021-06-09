@@ -157,7 +157,8 @@ export default {
 
 .outerCol::before {
   position: absolute;
-  font-size: 8rem;
+  font-size: 7rem;
+  font-weight: 100;
   content: attr(data-winner);
   color: rgba(0, 0, 0, 0.5);
 }
