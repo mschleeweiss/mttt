@@ -14,7 +14,7 @@ export class SocketIoAdapter extends AbstractWsAdapter {
 
   constructor(appOrHttpServer?: INestApplicationContext | any) {
     super(appOrHttpServer);
-    this.corsOrigins = ['http://localhost:8080'];
+    this.corsOrigins = ['http://localhost:8081'];
   }
 
   public create(

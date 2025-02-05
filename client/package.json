@@ -2,7 +2,7 @@
   "name": "mttt",
   "version": "0.1.0",
   "engines": {
-    "node": "14.x"
+    "node": "22.x"
   },
   "private": true,
   "scripts": {
@@ -15,8 +15,8 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^3.0.0-4",
-    "core-js": "^3.13.1",
-    "socket.io-client": "^4.1.2",
+    "core-js": "^3.40.0",
+    "socket.io-client": "^4.8.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.8",
     "vue-socket.io-extended": "^5.0.0-alpha.5",
